@@ -9,7 +9,7 @@ This is Github, so code. Some of the repositories I've made and worked with enou
 
 Taken some pretty neat courses so far:
 1. Advance Deep Learning for Computer Vision [Course Description](https://kurser.dtu.dk/course/02501)
-2. [A MidSummer's Bayesian Dream](bayesian/midSummer_Bayesian.md). Something cool I learn in a logical theories class.
+2. [A MidSummer's Bayesian Dream](bayesian/midSummer_Bayesian.md). Something cool I learned in a logical theories class.
 3. On the topic of Logic: I worked will [Elle McFarlane](https://github.com/ellemcfarlane) on seeing how epistemic logic could be used to help in the learning process of a reinforcement learning agents. This was the final work of the same cool class mentioned above. The work is [here](logicalTheories/del-marl.pdf)
 4. On the topic of RL: I'm studying right now how Reinforcement Learning works in Multi-Agent Systems, on a special course on the subject. Nothing crazy yet, but I'm sure I'll have something to share (hopefully).
 
