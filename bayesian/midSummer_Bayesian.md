@@ -16,26 +16,16 @@ Imagine two urns 🏮, both have five balls. **Urn 1** has 3 blue balls and 2 re
 
 Let’s continue the experiment. Agent 1 come in, and picks a ball. The 1st ball is blue. This leads her to think: “hmm, its more likely that I pick blue in the blue-majority urn, urn 1, so this I think this is urn 1. Right before she could explain her reasoning, volunteer 1 squealed away leaving a dust of confetti (you thought that was a joke? nop, sorry)
 
-$$
-\begin{array}{|c|c|}
-\hline
-
-Agent & Guess \\ \hline
-1     & B     \\ \hline
-\end{array}
-$$
+<!-- ![Drag Racing](urnChoice1.png) -->
+<div style="text-align: center;">
+    <img src="urnChoice1.png" alt="urnChoice1" />
+</div>
 
 In comes volunteer 2, and avoiding the confetti on the ground comes into the room, picks a ball, blue, comes out, sees the board and fills a row at the bottom:
 
-$$
-\begin{array}{|c|c|}
-\hline
-
-Agent & Guess \\ \hline
-1     & B     \\ \hline
-2     & B     \\ \hline
-\end{array}
-$$
+<div style="text-align: center;">
+    <img src="urnChoice2.png" alt="urnChoice2" />
+</div>
 
 > The question becomes then, how can this go wrong? (me, just now, 2024)
 > 

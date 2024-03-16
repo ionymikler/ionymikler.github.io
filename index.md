@@ -6,6 +6,6 @@ My CV is also available here [CV](https://drive.google.com/file/d/1lvdHvv4T7Xp73
 For now, I'm doing my Masters in Autonomous Systems at the Technical University of Denmark.\\
 Taken some pretty neat courses so far:\\
 1. Advance Deep Learning for Computer Vision [Course Description](https://kurser.dtu.dk/course/02501)
-2. [A MidSummer's Bayesian Dream](midSummer_Bayesian.md). Something cool I learn in a logical theories class. 
+2. [A MidSummer's Bayesian Dream](bayesian/midSummer_Bayesian.md). Something cool I learn in a logical theories class. 
 
 This website is in the making....
