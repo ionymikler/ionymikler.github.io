@@ -19,6 +19,7 @@ Let’s continue the experiment. Agent 1 come in, and picks a ball. The 1st ball
 $$
 \begin{array}{|c|c|}
 \hline
+
 Agent & Guess \\ \hline
 1     & B     \\ \hline
 \end{array}
@@ -29,6 +30,7 @@ In comes volunteer 2, and avoiding the confetti on the ground comes into the roo
 $$
 \begin{array}{|c|c|}
 \hline
+
 Agent & Guess \\ \hline
 1     & B     \\ \hline
 2     & B     \\ \hline
