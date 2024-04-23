@@ -2,7 +2,7 @@ This is Jonathan Mikler's display webpage, currently in progress...
 
 TLDR:
 * LinkedIn is the best place to find me: [LinkedIn](https://www.linkedin.com/in/jonathanmikler/)
-* My CV is available here: [CV](https://drive.google.com/file/d/1lvdHvv4T7Xp73bHWNpFuCBi6a5ovq2GX/view?usp=drive_link)
+* My CV is available here: [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link)
 * Currently pursuing my Masters in Autonomous Systems at the Technical University of Denmark.
 
 This is GitHub, so let's talk code. You can find some of the repositories I've created or worked with enough that forking them made sense [here](https://github.com/ionymikler).
