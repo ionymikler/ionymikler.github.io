@@ -42,7 +42,9 @@ This website is (**always**) a work in progress...
 ## Here are some blog posts related to the topics I've studied:
 1. On the topic of Logic: I studied how epistemic logic could be used to help in the learning process of reinforcement learning agents. This was the final work of that class. The work is available [here](courses/logicalTheories/del-marl.pdf) and was done together with [Elle McFarlane](https://github.com/ellemcfarlane) a great AI engineer if you need one.
 2. [A Midsummer's Bayesian Dream](bayesian/midSummer_Bayesian.md): Something cool I learned in a logical theories class (Under process...)
-3. I develop on a need-to-have basis these too shell toolboxes:
-   1. Generic Shell Toolbox: [Shell Toolbox](https://github.com/ionymikler/generic_shell_toolbox)
-   2. ROS Shell Toolbox: [ROS Shell Toolbox](https://github.com/ionymikler/ROS_shell_toolbox)
+
+## Other projects:
+I develop on a need-to-have basis these too `shell` toolboxes:
+1. Generic Shell Toolbox: [Shell Toolbox](https://github.com/ionymikler/generic_shell_toolbox)
+2. ROS Shell Toolbox: [ROS Shell Toolbox](https://github.com/ionymikler/ROS_shell_toolbox)
 
