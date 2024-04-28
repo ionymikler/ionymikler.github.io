@@ -23,7 +23,7 @@ This website is (**always**) a work in progress...
       3. Novel View Generation with NeRFs (my favourite)
 
 2. Artificial Intelligence for Multi-Agent Systems - [Course Description](https://kurser.dtu.dk/course/02285)
-   1. Main Project: Multi-Agent 'traditional' planning with PDDL, implementing from scratch planner algorithms for multi-agent systems.
+   1. Main Project: Multi-Agent 'traditional' planning with PDDL; planner algorithms for multi-agent systems. [Code](https://github.com/ionymikler/MultiAgentPlanner)
 
 3. Advanced Image Analysis Learning - [Course Description](https://kurser.dtu.dk/course/02506)
     1. Main Project: Probabilistic Deformable Models for Image Segmentation. [Poster](courses/adv_img_analysis/AdvImgAnalysis_Poster.pdf)
