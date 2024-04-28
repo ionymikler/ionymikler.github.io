@@ -5,6 +5,10 @@ Welcome to my personal website!
     </p>
 </div>
 
+This place serves a double purpose.
+1. As an archive of work I've done before, for now with the purpose of showing potential employers what I've done.
+2. As a place to share some of the things I've learned and found interesting.
+
 **TLDR:**
 * I am a Robotics Engineer in love with his field. Mobile Robots is the what and Reinforcement Learning is the how.
 * Currently pursuing my Masters in Autonomous Systems at the Technical University of Denmark.
@@ -38,4 +42,7 @@ This website is (**always**) a work in progress...
 ## Here are some blog posts related to the topics I've studied:
 1. On the topic of Logic: I studied how epistemic logic could be used to help in the learning process of reinforcement learning agents. This was the final work of that class. The work is available [here](courses/logicalTheories/del-marl.pdf) and was done together with [Elle McFarlane](https://github.com/ellemcfarlane) a great AI engineer if you need one.
 2. [A Midsummer's Bayesian Dream](bayesian/midSummer_Bayesian.md): Something cool I learned in a logical theories class (Under process...)
+3. I develop on a need-to-have basis these too shell toolboxes:
+   1. Generic Shell Toolbox: [Shell Toolbox](https://github.com/ionymikler/generic_shell_toolbox)
+   2. ROS Shell Toolbox: [ROS Shell Toolbox](https://github.com/ionymikler/ROS_shell_toolbox)
 
