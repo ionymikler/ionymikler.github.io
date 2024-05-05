@@ -47,7 +47,7 @@ This place serves a double purpose.
 2. [A Midsummer's Bayesian Dream](bayesian/midSummer_Bayesian.md): Something cool I learned in a logical theories class (Under process...)
 
 ## Other projects:
-I develop on a need-to-have basis these too `shell` toolboxes:
+I develop on a need-to-have basis these two `shell` toolboxes:
 1. Generic Shell Toolbox: [Shell Toolbox](https://github.com/ionymikler/generic_shell_toolbox)
 2. ROS Shell Toolbox: [ROS Shell Toolbox](https://github.com/ionymikler/ROS_shell_toolbox)
 
