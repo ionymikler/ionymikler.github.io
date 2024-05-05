@@ -5,22 +5,25 @@ Welcome to my personal website!
     </p>
 </div>
 
+This website is (**always**) a work in progress...
 This place serves a double purpose.
 1. As an archive of work I've done before, for now with the purpose of showing potential employers what I've done.
 2. As a place to share some of the things I've learned and found interesting.
 
 **TLDR:**
-* I am a Robotics Engineer in love with his field. Mobile Robots is the what and Reinforcement Learning is the how.
+* I am a Robotics Engineer in love with the field. Mobile Robots being the what and Reinforcement Learning (partially at least) the how.
 * Currently pursuing my Masters in Autonomous Systems at the Technical University of Denmark.
   * The code to some of my projects can be found [here](https://github.com/ionymikler).
   * My CV is available here: [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link)
   * LinkedIn: [LinkedIn](https://www.linkedin.com/in/jonathanmikler/)
 
-This website is (**always**) a work in progress...
 
-## I've taken some pretty neat courses so far:
+## I've taken some interesting courses so far:
 1. Advanced Deep Learning for Computer Vision - [Course Description](https://kurser.dtu.dk/course/02501)
    1. Main project: Detection Transformer for Monocular 3D Object Detection. The code is available [here](https://github.com/esquivelrs/MonoDETR)
+      1. Partially disconnecting the depth-estimator lead to better performance and lower variance during training.
+      2. Proposing use of *disentangled* losses to improve kearning (inspired by Cube R-CNN).
+      3. Replaced the visual encoder with a faster one to explore real-time usage.
    2. Other projects:
       1. Visual Transformer for Image Classification
       2. Diffusion Models to Generate (guided and not) 16x16 game sprites.
