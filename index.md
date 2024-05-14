@@ -1,23 +1,25 @@
-Welcome to my personal website!
-<div class="container">
-    <p>
-        <img src="me.png" alt="Jonathan Mikler" style="width:10%">
-    </p>
-</div>
+<img src="Jonathan.jpg" alt="Image" style="float: left; margin-right: 10px; width:10%" />
 
-This website is (**always**) a work in progress...
-This place serves a double purpose.
-1. As an archive of work I've done before, for now with the purpose of showing potential employers what I've done.
-2. As a place to share some of the things I've learned and found interesting.
+**Welcome to my personal website!**
 
-**TLDR:**
 * I am a Robotics Engineer in love with the field. Mobile Robots being the what and Reinforcement Learning (partially at least) the how.
 * Currently pursuing my Masters in Autonomous Systems at the Technical University of Denmark.
   * The code to some of my projects can be found [here](https://github.com/ionymikler).
   * My CV is available here: [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link)
   * LinkedIn: [LinkedIn](https://www.linkedin.com/in/jonathanmikler/)
 
+This website is (**always**) a work in progress...
+This place serves a double purpose.
+1. As an archive of work I've done before, for now with the purpose of showing potential employers what I've done.
+2. As a place to share some of the things I've learned and found interesting.
 
+# Professional Background
+Please check my CV for a more detailed description of my professional background. Here are some highlights:
+1. **Robotics Engineer Student** @ [Agri-Robot](https://agrirobot.ai/)
+2. **Robotics Engineer** @ [Blue White Robotics](https://www.bluewhite.co/)
+3. **Test Engineer** @ [Blue White Robotics](https://www.bluewhite.co/)
+
+# Academic Background
 ## I've taken some interesting courses so far:
 1. Advanced Deep Learning for Computer Vision - [Course Description](https://kurser.dtu.dk/course/02501)
    1. Main project: Detection Transformer for Monocular 3D Object Detection. The code is available [here](https://github.com/esquivelrs/MonoDETR)
