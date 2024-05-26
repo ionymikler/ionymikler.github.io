@@ -1,12 +1,16 @@
-<img src="Jonathan.jpg" alt="Image" style="float: left; margin-right: 10px; width:10%" />
-
-**Welcome to my personal website!**
-
-* I am a Robotics Engineer in love with the field. Mobile Robots being the what and Reinforcement Learning (partially at least) the how.
-* Currently pursuing my Masters in Autonomous Systems at the Technical University of Denmark.
-  * The code to some of my projects can be found [here](https://github.com/ionymikler).
-  * My CV is available here: [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link)
-  * LinkedIn: [LinkedIn](https://www.linkedin.com/in/jonathanmikler/)
+<div style="overflow: auto;">
+    <img src="Jonathan.jpg" alt="Image" style="float: left; margin-right: 10px; width:15%" />
+    <div>
+        <strong>Welcome to my personal website!</strong>
+        <div>
+            <li>I am a Robotics Engineer in love with the field.</li>
+            <li>Currently pursuing my Masters in Autonomous Systems at the Technical University of Denmark.</li>
+            <li>The code to some of my projects can be found <a href="https://github.com/ionymikler">here</a>.</li>
+            <li>My CV is available here: <a href="https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link">CV</a></li>
+            <li>LinkedIn: <a href="https://www.linkedin.com/in/jonathanmikler/">LinkedIn</a></li>
+        </div>
+    </div>
+</div>
 
 This website is (**always**) a work in progress...
 This place serves a double purpose.
