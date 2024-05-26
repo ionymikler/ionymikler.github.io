@@ -38,21 +38,19 @@ Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-n
    2. Diffusion Models to Generate (guided and not) 16x16 game sprites.
    3. Novel View Generation with NeRFs (my favourite)
 
-1. Artificial Intelligence for Multi-Agent Systems - [Course Description](https://kurser.dtu.dk/course/02285)
+2. [Artificial Intelligence for Multi-Agent Systems](https://kurser.dtu.dk/course/02285)
    
    Main Project: Multi-Agent planning with PDDL; planner algorithms for multi-agent systems. [Code](https://github.com/ionymikler/MultiAgentPlanner)
 
-2. Advanced Image Analysis Learning - [Course Description](https://kurser.dtu.dk/course/02506)
+3. [Advanced Image Analysis Learning](https://kurser.dtu.dk/course/02506)
    
    Main Project: Probabilistic Deformable Models for Image Segmentation. [Poster](courses/adv_img_analysis/AdvImgAnalysis_Poster.pdf)
-
-3. Perception for Autonomous Systems - [Course Description](https://kurser.dtu.dk/course/34759)
-
-4. Logical Theories for Uncertainty and Planning - [Course Description](https://kurser.dtu.dk/course/02287)
+4. [Perception for Autonomous Systems](https://kurser.dtu.dk/course/34759)
+5. [Logical Theories for Uncertainty and Planning](https://kurser.dtu.dk/course/02287)
 
    Main Project: Epistemic Logic for Reinforcement Learning. [Report](courses/logicalTheories/del-marl.pdf)
-
-5. On the topic of RL: I'm currently studying how Reinforcement Learning works in Multi-Agent Systems, on a special course dedicated to the subject. Nothing too crazy yet, but I'm sure I'll have something to share (hopefully).
+   
+6. On the topic of RL: I'm currently studying how Reinforcement Learning works in Multi-Agent Systems, on a special course dedicated to the subject. Nothing too crazy yet, but I'm sure I'll have something to share (hopefully).
 
 ## Here are some blog posts related to the topics I've studied:
 1. On the topic of Logic: I studied how epistemic logic could be used to help in the learning process of reinforcement learning agents. This was the final work of that class. The work is available [here](courses/logicalTheories/del-marl.pdf) and was done together with [Elle McFarlane](https://github.com/ellemcfarlane) a great AI engineer if you need one.
