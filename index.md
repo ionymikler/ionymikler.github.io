@@ -40,7 +40,10 @@ Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-n
 
 2. [Artificial Intelligence for Multi-Agent Systems](https://kurser.dtu.dk/course/02285)
    
-   Main Project: Multi-Agent planning with PDDL; planner algorithms for multi-agent systems. [Code](https://github.com/ionymikler/MultiAgentPlanner)
+   Main Project: Windowed Hierarchichal Cooperative A* Multi-Agent Planning.[video](), [Code](https://github.com/ionymikler/MultiAgentPlanner)
+      * Developed a multi-agent planner that uses a windowed hierarchical approach to solve cooperative pathfinding problems.
+      * Uses a hierarchical approach to solve the problem, where a high-level planner assigns subgoals to agents and an agent-level planner solves the pathfinding problem.
+      * To solve conflicts, the planner uses a windowed approach, where agents are allowed to replan their paths within a time frame if they collide with other agents.
 
 3. [Advanced Image Analysis Learning](https://kurser.dtu.dk/course/02506)
    
@@ -49,7 +52,7 @@ Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-n
 5. [Logical Theories for Uncertainty and Planning](https://kurser.dtu.dk/course/02287)
 
    Main Project: Epistemic Logic for Reinforcement Learning. [Report](courses/logicalTheories/del-marl.pdf)
-   
+
 6. On the topic of RL: I'm currently studying how Reinforcement Learning works in Multi-Agent Systems, on a special course dedicated to the subject. Nothing too crazy yet, but I'm sure I'll have something to share (hopefully).
 
 ## Here are some blog posts related to the topics I've studied:
