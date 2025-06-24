@@ -1,15 +1,21 @@
 <div style="overflow: auto;">
-    <img src="Jonathan.jpg" alt="Image" style="float: left; margin-right: 10px; width:15%" />
+    <figure style="float: left; margin-right: 10px; width:10%;">
+      <img src="media/me_and_friends.png" alt="Image" style="width:100%;" />
+      <figcaption style="font-size: small; text-align: center;">Guess who's me</figcaption>
+   </figure>
     <div>
         <strong>Welcome to my personal website!</strong>
         <div>
             <li>I am a Robotics Engineer in love with the field.</li>
-            <li>Currently pursuing my Masters in Autonomous Systems at the Technical University of Denmark.</li>
+            <li>I hold a M.Sc. in Autonomous Systems from the Technical University of Denmark.</li>
             <li>The code to some of my projects can be found <a href="https://github.com/ionymikler">here</a>.</li>
-            <li>My CV is available here: <a href="https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link">CV</a></li>
-            <li>LinkedIn: <a href="https://www.linkedin.com/in/jonathanmikler/">LinkedIn</a></li>
+            <li>Here are my <a href="https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link">CV</a> and my <a href="https://www.linkedin.com/in/jonathanmikler/">LinkedIn</a> profile</li>
         </div>
     </div>
+</div>
+
+<div>
+<hr style="visibility:hidden; margin: 6px 0;" />
 </div>
 
 This website is (**always**) a work in progress...
@@ -18,10 +24,31 @@ This place serves a double purpose.
 2. As a place to share some of the things I've learned and found interesting.
 
 # Professional Background
-Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link) for a more detailed description of my professional background. Here are some highlights:
-1. **Robotics Engineer Student** @ [Agri-Robot](https://agrirobot.ai/) Currently
+Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link) for a more detailed description of my professional background.
+
+Here are some highlights:
+1. **Robotics Engineer** @ [AgriRobot](https://agrirobot.ai/) 2023 - 2025
+   
+   **Highlight:** Robotic software testing framework
+   * I co-developed a testing framework enabling ROS-based systems to test any subset of their architecture, from individual nodes to complete systems.
+   * This framework turned to be so effective that the company chose to open-source it. I’m currently working on the first public release.
+
+   **Highlight:** Speed Dependent Safety Zone Module @ Agrirobot
+   * I implemented the prototype of a critical safety subsystem that dynamically calculates obstacle detection zones based on robot speed and size to ensure safe stopping distances.
+   * Built the initial prototype from theoretical modeling through to a 2D dynamic simulator, accounting for kinematic effects. The end results is the calculation of detection areas that allow the robot to operate safely.
+
 2. **Robotics Engineer** @ [Blue White Robotics](https://www.bluewhite.co/) 2020-2022
-3. **Test Engineer** @ [Blue White Robotics](https://www.bluewhite.co/) 2019-2020
+   
+   **Highlight:** Autonomous Tractor project:
+   
+   * Took part in the core development as part of a 3-person team, building the first prototype for the autonomous tractor project. Implemented path-tracking, path-planning, and mission handling modules with basic hardware (depth camera, Arduino, GPS). 
+   * The internal demo was succesful and managed to convince upper management, who were skeptical that the project could be done in-house, to shift from subcontractors to in-house development, scaling the team from 3 to 15 developers.
+   * The role involved extensive field testing to validate the system, which became the company's main product with original implementations still in production use today.
+
+   **Highlight:** Dev-support engineer:
+   * For about half a year, I joined the dev-support team troubleshoot the robots deployed on the field in USA. I worked entirely remotly and Oversaw operating issues, with a team of 3 handled with over 40 tickets/month.
+   * Part of this role involved developing diagnostic tools for triaging operation faults, for it to be used both by technical and non-technical people. This tool ended being very crucial for everyday operation.
+
 
 # Academic Background
 ## I've taken some interesting courses so far:
@@ -60,7 +87,6 @@ Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-n
 2. [A Midsummer's Bayesian Dream](bayesian/midSummer_Bayesian.md): Something cool I learned in a logical theories class (Under process...)
 
 ## Other projects:
-I develop on a need-to-have basis these two `shell` toolboxes:
+I develop on a need-to-have basis this `shell` toolboxes:
 1. Generic Shell Toolbox: [Shell Toolbox](https://github.com/ionymikler/generic_shell_toolbox)
-2. ROS Shell Toolbox: [ROS Shell Toolbox](https://github.com/ionymikler/ROS_shell_toolbox)
 
