@@ -1,5 +1,5 @@
 <div style="overflow: auto;">
-    <figure style="float: left; margin-right: 10px; width:10%;">
+    <figure style="float: left; margin-right: 10px; width:15%;">
       <img src="media/me_and_friends.png" alt="Image" style="width:100%;" />
       <figcaption style="font-size: small; text-align: center;">Guess who's me</figcaption>
    </figure>
@@ -85,7 +85,7 @@ Here are some highlights:
 ## Here are some blog posts related to the topics I've studied:
 1. On the topic of Logic: I studied how epistemic logic could be used to help in the learning process of reinforcement learning agents. This was the final work of that class. The work is available [here](courses/logicalTheories/del-marl.pdf) and was done together with [Elle McFarlane](https://github.com/ellemcfarlane) a great AI engineer if you need one.
 2. [A Midsummer's Bayesian Dream](bayesian/midSummer_Bayesian.md): Something cool I learned in a logical theories class (Under process...)
-
+3. [EE](articles/thesis/ee-in-cv-pt1.html)
 ## Other projects:
 I develop on a need-to-have basis this `shell` toolboxes:
 1. Generic Shell Toolbox: [Shell Toolbox](https://github.com/ionymikler/generic_shell_toolbox)

@@ -1,0 +1,1824 @@
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Early Exit Networks for Computer Vision Pt.1</title>
+	<style>
+		/* cspell:disable-file */
+		/* webkit printing magic: print all background colors */
+		html {
+			-webkit-print-color-adjust: exact;
+		}
+
+		* {
+			box-sizing: border-box;
+			-webkit-print-color-adjust: exact;
+		}
+
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		@media only screen {
+			body {
+				margin: 2em auto;
+				max-width: 900px;
+				color: rgb(55, 53, 47);
+			}
+		}
+
+		body {
+			line-height: 1.5;
+			white-space: pre-wrap;
+		}
+
+		a,
+		a.visited {
+			color: inherit;
+			text-decoration: underline;
+		}
+
+		.pdf-relative-link-path {
+			font-size: 80%;
+			color: #444;
+		}
+
+		h1,
+		h2,
+		h3 {
+			letter-spacing: -0.01em;
+			line-height: 1.2;
+			font-weight: 600;
+			margin-bottom: 0;
+		}
+
+		.page-title {
+			font-size: 2.5rem;
+			font-weight: 700;
+			margin-top: 0;
+			margin-bottom: 0.75em;
+		}
+
+		h1 {
+			font-size: 1.875rem;
+			margin-top: 1.875rem;
+		}
+
+		h2 {
+			font-size: 1.5rem;
+			margin-top: 1.5rem;
+		}
+
+		h3 {
+			font-size: 1.25rem;
+			margin-top: 1.25rem;
+		}
+
+		.source {
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			padding: 1.5em;
+			word-break: break-all;
+		}
+
+		.callout {
+			border-radius: 3px;
+			padding: 1rem;
+		}
+
+		figure {
+			margin: 1.25em 0;
+			page-break-inside: avoid;
+		}
+
+		figcaption {
+			opacity: 0.5;
+			font-size: 85%;
+			margin-top: 0.5em;
+		}
+
+		mark {
+			background-color: transparent;
+		}
+
+		.indented {
+			padding-left: 1.5em;
+		}
+
+		hr {
+			background: transparent;
+			display: block;
+			width: 100%;
+			height: 1px;
+			visibility: visible;
+			border: none;
+			border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+		}
+
+		img {
+			max-width: 100%;
+		}
+
+		@media only print {
+			img {
+				max-height: 100vh;
+				object-fit: contain;
+			}
+		}
+
+		@page {
+			margin: 1in;
+		}
+
+		.collection-content {
+			font-size: 0.875rem;
+		}
+
+		.collection-content td {
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+
+		.column-list {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.column {
+			padding: 0 1em;
+		}
+
+		.column:first-child {
+			padding-left: 0;
+		}
+
+		.column:last-child {
+			padding-right: 0;
+		}
+
+		.table_of_contents-item {
+			display: block;
+			font-size: 0.875rem;
+			line-height: 1.3;
+			padding: 0.125rem;
+		}
+
+		.table_of_contents-indent-1 {
+			margin-left: 1.5rem;
+		}
+
+		.table_of_contents-indent-2 {
+			margin-left: 3rem;
+		}
+
+		.table_of_contents-indent-3 {
+			margin-left: 4.5rem;
+		}
+
+		.table_of_contents-link {
+			text-decoration: none;
+			opacity: 0.7;
+			border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+		}
+
+		table,
+		th,
+		td {
+			border: 1px solid rgba(55, 53, 47, 0.09);
+			border-collapse: collapse;
+		}
+
+		table {
+			border-left: none;
+			border-right: none;
+		}
+
+		th,
+		td {
+			font-weight: normal;
+			padding: 0.25em 0.5em;
+			line-height: 1.5;
+			min-height: 1.5em;
+			text-align: left;
+		}
+
+		th {
+			color: rgba(55, 53, 47, 0.6);
+		}
+
+		ol,
+		ul {
+			margin: 0;
+			margin-block-start: 0.6em;
+			margin-block-end: 0.6em;
+		}
+
+		li>ol:first-child,
+		li>ul:first-child {
+			margin-block-start: 0.6em;
+		}
+
+		ul>li {
+			list-style: disc;
+		}
+
+		ul.to-do-list {
+			padding-inline-start: 0;
+		}
+
+		ul.to-do-list>li {
+			list-style: none;
+		}
+
+		.to-do-children-checked {
+			text-decoration: line-through;
+			opacity: 0.375;
+		}
+
+		ul.toggle>li {
+			list-style: none;
+		}
+
+		ul {
+			padding-inline-start: 1.7em;
+		}
+
+		ul>li {
+			padding-left: 0.1em;
+		}
+
+		ol {
+			padding-inline-start: 1.6em;
+		}
+
+		ol>li {
+			padding-left: 0.2em;
+		}
+
+		.mono ol {
+			padding-inline-start: 2em;
+		}
+
+		.mono ol>li {
+			text-indent: -0.4em;
+		}
+
+		.toggle {
+			padding-inline-start: 0em;
+			list-style-type: none;
+		}
+
+		/* Indent toggle children */
+		.toggle>li>details {
+			padding-left: 1.7em;
+		}
+
+		.toggle>li>details>summary {
+			margin-left: -1.1em;
+		}
+
+		.selected-value {
+			display: inline-block;
+			padding: 0 0.5em;
+			background: rgba(206, 205, 202, 0.5);
+			border-radius: 3px;
+			margin-right: 0.5em;
+			margin-top: 0.3em;
+			margin-bottom: 0.3em;
+			white-space: nowrap;
+		}
+
+		.collection-title {
+			display: inline-block;
+			margin-right: 1em;
+		}
+
+		.page-description {
+			margin-bottom: 2em;
+		}
+
+		.simple-table {
+			margin-top: 1em;
+			font-size: 0.875rem;
+			empty-cells: show;
+		}
+
+		.simple-table td {
+			height: 29px;
+			min-width: 120px;
+		}
+
+		.simple-table th {
+			height: 29px;
+			min-width: 120px;
+		}
+
+		.simple-table-header-color {
+			background: rgb(247, 246, 243);
+			color: black;
+		}
+
+		.simple-table-header {
+			font-weight: 500;
+		}
+
+		time {
+			opacity: 0.5;
+		}
+
+		.icon {
+			display: inline-block;
+			max-width: 1.2em;
+			max-height: 1.2em;
+			text-decoration: none;
+			vertical-align: text-bottom;
+			margin-right: 0.5em;
+		}
+
+		img.icon {
+			border-radius: 3px;
+		}
+
+		.user-icon {
+			width: 1.5em;
+			height: 1.5em;
+			border-radius: 100%;
+			margin-right: 0.5rem;
+		}
+
+		.user-icon-inner {
+			font-size: 0.8em;
+		}
+
+		.text-icon {
+			border: 1px solid #000;
+			text-align: center;
+		}
+
+		.page-cover-image {
+			display: block;
+			object-fit: cover;
+			width: 100%;
+			max-height: 30vh;
+		}
+
+		.page-header-icon {
+			font-size: 3rem;
+			margin-bottom: 1rem;
+		}
+
+		.page-header-icon-with-cover {
+			margin-top: -0.72em;
+			margin-left: 0.07em;
+		}
+
+		.page-header-icon img {
+			border-radius: 3px;
+		}
+
+		.link-to-page {
+			margin: 1em 0;
+			padding: 0;
+			border: none;
+			font-weight: 500;
+		}
+
+		p>.user {
+			opacity: 0.5;
+		}
+
+		td>.user,
+		td>time {
+			white-space: nowrap;
+		}
+
+		input[type="checkbox"] {
+			transform: scale(1.5);
+			margin-right: 0.6em;
+			vertical-align: middle;
+		}
+
+		p {
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+		}
+
+		.image {
+			border: none;
+			margin: 1.5em 0;
+			padding: 0;
+			border-radius: 0;
+			text-align: center;
+		}
+
+		.code,
+		code {
+			background: rgba(135, 131, 120, 0.15);
+			border-radius: 3px;
+			padding: 0.2em 0.4em;
+			border-radius: 3px;
+			font-size: 85%;
+			tab-size: 2;
+		}
+
+		code {
+			color: #eb5757;
+		}
+
+		.code {
+			padding: 1.5em 1em;
+		}
+
+		.code-wrap {
+			white-space: pre-wrap;
+			word-break: break-all;
+		}
+
+		.code>code {
+			background: none;
+			padding: 0;
+			font-size: 100%;
+			color: inherit;
+		}
+
+		blockquote {
+			font-size: 1em;
+			margin: 1em 0;
+			padding-left: 1em;
+			border-left: 3px solid rgb(55, 53, 47);
+		}
+
+		blockquote.quote-large {
+			font-size: 1.25em;
+		}
+
+		.bookmark {
+			text-decoration: none;
+			max-height: 8em;
+			padding: 0;
+			display: flex;
+			width: 100%;
+			align-items: stretch;
+		}
+
+		.bookmark-title {
+			font-size: 0.85em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			height: 1.75em;
+			white-space: nowrap;
+		}
+
+		.bookmark-text {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.bookmark-info {
+			flex: 4 1 180px;
+			padding: 12px 14px 14px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
+		.bookmark-image {
+			width: 33%;
+			flex: 1 1 180px;
+			display: block;
+			position: relative;
+			object-fit: cover;
+			border-radius: 1px;
+		}
+
+		.bookmark-description {
+			color: rgba(55, 53, 47, 0.6);
+			font-size: 0.75em;
+			overflow: hidden;
+			max-height: 4.5em;
+			word-break: break-word;
+		}
+
+		.bookmark-href {
+			font-size: 0.75em;
+			margin-top: 0.25em;
+		}
+
+		.sans {
+			font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+		}
+
+		.code {
+			font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+		}
+
+		.serif {
+			font-family: Lyon-Text, Georgia, ui-serif, serif;
+		}
+
+		.mono {
+			font-family: iawriter-mono, Nitti, Menlo, Courier, monospace;
+		}
+
+		.pdf .sans {
+			font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP';
+		}
+
+		.pdf:lang(zh-CN) .sans {
+			font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC';
+		}
+
+		.pdf:lang(zh-TW) .sans {
+			font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC';
+		}
+
+		.pdf:lang(ko-KR) .sans {
+			font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR';
+		}
+
+		.pdf .code {
+			font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP';
+		}
+
+		.pdf:lang(zh-CN) .code {
+			font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC';
+		}
+
+		.pdf:lang(zh-TW) .code {
+			font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC';
+		}
+
+		.pdf:lang(ko-KR) .code {
+			font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR';
+		}
+
+		.pdf .serif {
+			font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP';
+		}
+
+		.pdf:lang(zh-CN) .serif {
+			font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC';
+		}
+
+		.pdf:lang(zh-TW) .serif {
+			font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC';
+		}
+
+		.pdf:lang(ko-KR) .serif {
+			font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR';
+		}
+
+		.pdf .mono {
+			font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP';
+		}
+
+		.pdf:lang(zh-CN) .mono {
+			font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC';
+		}
+
+		.pdf:lang(zh-TW) .mono {
+			font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC';
+		}
+
+		.pdf:lang(ko-KR) .mono {
+			font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR';
+		}
+
+		.highlight-default {
+			color: rgba(44, 44, 43, 1);
+		}
+
+		.highlight-gray {
+			color: rgba(115, 114, 110, 1);
+			fill: rgba(115, 114, 110, 1);
+		}
+
+		.highlight-brown {
+			color: rgba(159, 107, 83, 1);
+			fill: rgba(159, 107, 83, 1);
+		}
+
+		.highlight-orange {
+			color: rgba(217, 115, 13, 1);
+			fill: rgba(217, 115, 13, 1);
+		}
+
+		.highlight-yellow {
+			color: rgba(203, 145, 47, 1);
+			fill: rgba(203, 145, 47, 1);
+		}
+
+		.highlight-teal {
+			color: rgba(68, 131, 97, 1);
+			fill: rgba(68, 131, 97, 1);
+		}
+
+		.highlight-blue {
+			color: rgba(51, 126, 169, 1);
+			fill: rgba(51, 126, 169, 1);
+		}
+
+		.highlight-purple {
+			color: rgba(144, 101, 176, 1);
+			fill: rgba(144, 101, 176, 1);
+		}
+
+		.highlight-pink {
+			color: rgba(193, 76, 138, 1);
+			fill: rgba(193, 76, 138, 1);
+		}
+
+		.highlight-red {
+			color: rgba(205, 60, 58, 1);
+			fill: rgba(205, 60, 58, 1);
+		}
+
+		.highlight-default_background {
+			color: rgba(44, 44, 43, 1);
+		}
+
+		.highlight-gray_background {
+			background: rgba(248, 248, 247, 1);
+		}
+
+		.highlight-brown_background {
+			background: rgba(244, 238, 238, 1);
+		}
+
+		.highlight-orange_background {
+			background: rgba(251, 236, 221, 1);
+		}
+
+		.highlight-yellow_background {
+			background: rgba(251, 243, 219, 1);
+		}
+
+		.highlight-teal_background {
+			background: rgba(237, 243, 236, 1);
+		}
+
+		.highlight-blue_background {
+			background: rgba(231, 243, 248, 1);
+		}
+
+		.highlight-purple_background {
+			background: rgba(248, 243, 252, 1);
+		}
+
+		.highlight-pink_background {
+			background: rgba(252, 241, 246, 1);
+		}
+
+		.highlight-red_background {
+			background: rgba(253, 235, 236, 1);
+		}
+
+		.block-color-default {
+			color: inherit;
+			fill: inherit;
+		}
+
+		.block-color-gray {
+			color: rgba(115, 114, 110, 1);
+			fill: rgba(115, 114, 110, 1);
+		}
+
+		.block-color-brown {
+			color: rgba(159, 107, 83, 1);
+			fill: rgba(159, 107, 83, 1);
+		}
+
+		.block-color-orange {
+			color: rgba(217, 115, 13, 1);
+			fill: rgba(217, 115, 13, 1);
+		}
+
+		.block-color-yellow {
+			color: rgba(203, 145, 47, 1);
+			fill: rgba(203, 145, 47, 1);
+		}
+
+		.block-color-teal {
+			color: rgba(68, 131, 97, 1);
+			fill: rgba(68, 131, 97, 1);
+		}
+
+		.block-color-blue {
+			color: rgba(51, 126, 169, 1);
+			fill: rgba(51, 126, 169, 1);
+		}
+
+		.block-color-purple {
+			color: rgba(144, 101, 176, 1);
+			fill: rgba(144, 101, 176, 1);
+		}
+
+		.block-color-pink {
+			color: rgba(193, 76, 138, 1);
+			fill: rgba(193, 76, 138, 1);
+		}
+
+		.block-color-red {
+			color: rgba(205, 60, 58, 1);
+			fill: rgba(205, 60, 58, 1);
+		}
+
+		.block-color-default_background {
+			color: inherit;
+			fill: inherit;
+		}
+
+		.block-color-gray_background {
+			background: rgba(248, 248, 247, 1);
+		}
+
+		.block-color-brown_background {
+			background: rgba(244, 238, 238, 1);
+		}
+
+		.block-color-orange_background {
+			background: rgba(251, 236, 221, 1);
+		}
+
+		.block-color-yellow_background {
+			background: rgba(251, 243, 219, 1);
+		}
+
+		.block-color-teal_background {
+			background: rgba(237, 243, 236, 1);
+		}
+
+		.block-color-blue_background {
+			background: rgba(231, 243, 248, 1);
+		}
+
+		.block-color-purple_background {
+			background: rgba(248, 243, 252, 1);
+		}
+
+		.block-color-pink_background {
+			background: rgba(252, 241, 246, 1);
+		}
+
+		.block-color-red_background {
+			background: rgba(253, 235, 236, 1);
+		}
+
+		.select-value-color-default {
+			background-color: rgba(42, 28, 0, 0.07);
+		}
+
+		.select-value-color-gray {
+			background-color: rgba(28, 19, 1, 0.11);
+		}
+
+		.select-value-color-brown {
+			background-color: rgba(127, 51, 0, 0.156);
+		}
+
+		.select-value-color-orange {
+			background-color: rgba(196, 88, 0, 0.203);
+		}
+
+		.select-value-color-yellow {
+			background-color: rgba(209, 156, 0, 0.282);
+		}
+
+		.select-value-color-green {
+			background-color: rgba(0, 96, 38, 0.156);
+		}
+
+		.select-value-color-blue {
+			background-color: rgba(0, 99, 174, 0.172);
+		}
+
+		.select-value-color-purple {
+			background-color: rgba(92, 0, 163, 0.141);
+		}
+
+		.select-value-color-pink {
+			background-color: rgba(183, 0, 78, 0.152);
+		}
+
+		.select-value-color-red {
+			background-color: rgba(206, 24, 0, 0.164);
+		}
+
+		.checkbox {
+			display: inline-flex;
+			vertical-align: text-bottom;
+			width: 16;
+			height: 16;
+			background-size: 16px;
+			margin-left: 2px;
+			margin-right: 5px;
+		}
+
+		.checkbox-on {
+			background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+		}
+
+		.checkbox-off {
+			background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+		}
+	</style>
+</head>
+
+<body>
+	<article id="26aea373-0c6a-80cb-8998-eee15a1521b1" class="page sans">
+		<header>
+			<h1 class="page-title">Early Exit Networks for Computer Vision Pt.1 (1)</h1>
+			<p class="page-description"></p>
+		</header>
+		<div class="page-body">
+			<p id="05edce31-fd51-4bcb-a848-90eacc8fb18b" class="">Between October 24' and February 25', I worked a
+				lot with novel architectures of neural networks, called <em>Early-exit neural networks, </em>a relatively new
+				design approach to designing neural networks that aims to reduce latency of large models. Specifically I worked
+				with networks for computer vision (CV)
+			
+				The work aimed to achieve two main goals:
+			</p>
+			<ol type="1" id="6998b6a1-f169-409e-b7d0-4c6a47a608de" class="numbered-list" start="1">
+				<li>Enabling an early-exit model to be production-ready</li>
+			</ol>
+			<ol type="1" id="bf8d412a-5c8e-47ac-9e99-a7bdf084a3de" class="numbered-list" start="2">
+				<li>Explore the understanding on their increased performance.</li>
+			</ol>
+			<p id="eb92aee7-5444-4af2-9136-b3e26ce41ccd" class="">The results from this small research journey were very
+				interesting and promising, but not deep enough to produce a paper (although the work continues and we will look
+				into publishing).</p>
+			<p id="f153e04e-f41e-489d-b86f-59326588f35e" class="">This 2-part article comes wanting to share outside my
+				academia circle this results. <strong>The first part</strong> introduces the e<em>arly-exit </em>idea and goes
+				into some detail on one of the SOTA early-exit models, the Local-Global ViT and explains why even though its
+				results are promising, using it in real life environments is not so straightforward. <strong>In the second
+					part</strong>, I&#x27;ll share the work I did to make the model <em>deployment ready </em>and I&#x27;ll go in
+				detail on the performance studies I carried on it and the implications of this findings in future use these
+				fascinating new models.</p>
+			<p id="ea51ebd8-2c82-4124-80a9-a8dd67887a63" class=""><strong>Important note: </strong>At the time my thesis
+				(Oct.24 - Feb.25) the <a href="https://arxiv.org/abs/2010.11929">Visual-Transformer</a> (ViT) like models were
+				at the top of the leader-boards for many if not all the CV challenges like <a
+					href="https://leaderboard.roboflow.com/">object detection</a> and <a
+					href="https://ieeexplore.ieee.org/abstract/document/10613466">Image Segmentation</a>. Naturally the early
+				exits research looked into ViTs. At the time of starting my thesis there was a clear trend of increasing work in
+				this junction. Hence, we will focus solely on models based on the ViT. This even though early-exits have a
+				history in CV <a href="https://arxiv.org/abs/1509.08971">way before the advent of the transformer</a>. As we
+				will later see, this is quite convenient since the transformer architecture is quite modular and allows</p>
+			<hr id="26aea373-0c6a-8183-b48d-cd5d87dec903" />
+			<p id="26aea373-0c6a-81b8-8aca-f5b79939b034" class="">I hope you find this novel approach as interesting as I did
+				and perhaps useful, if you are doing something similar :-)</p>
+			<h1 id="26aea373-0c6a-818e-a884-c6ee116275ce" class="block-color-default"><strong>Introduction</strong></h1>
+			<p id="26aea373-0c6a-81f4-a8b8-cac662f39a29" class="">Computer vision deep learning models are the best performing
+				across the board. These models take the gold in challenges like image recognition, image segmentation and object
+				detection and tracking and thus, make <mark class="highlight-default">them</mark> very attractive to be applied
+				in robotic applications. But there is a catch.</p>
+			<p id="26aea373-0c6a-8135-8ae7-edc21c9e58b4" class="">These AI models can be quite big and <em>latency</em> heavy.
+				Latency can be though as the <em>prediction time</em>, that is, the time it takes the AI model to make a
+				prediction on the given data (in this case an image). This alone present a big hurdle is we want to use this
+				models in robotics.</p>
+			<p id="26aea373-0c6a-819f-93ea-da2076a3ccb9" class="">Robots usually exists in environments where the computer
+				they run on is relatively small and limited in computation capacity. And although hardware keep getting better,
+				these AI models keep getting bigger.</p>
+			<h2 id="26aea373-0c6a-81b1-9f47-cb30245f4a96" class=""><strong>The problem (or opportunity) of
+				</strong><em><strong>over-thinking</strong></em></h2>
+			<p id="26aea373-0c6a-81af-b0dd-e4bac99e3e70" class="">Increase in network size has grown directly in correlation
+				to performance, and while there might be some over-dimension, the <em>bigger is better </em>mantra seems to hold
+				so far.</p>
+			<p id="26aea373-0c6a-8168-aaa5-fff517c6f29a" class="">One could ask, <em>if models perform better when increasing
+					in size, what is the limit?</em></p>
+			<p id="26aea373-0c6a-81a1-bd98-df9a8a796464" class="">Ideally, the design of a network goes over some iteration on
+				its hyper-parameters, one being the amount of neurons added to the network, and the size chosen should be close
+				to the <em>best performing one. </em>If when designing a model, increasing its size brings performance down, it
+				means that the model’s additional neurons were detrimental for the overall<em> </em>performance of the model,
+				and a smaller model is the <em>best performing. </em>In other words, within the scope of the network’s size, the
+				<em>optimal </em>architecture for a dataset is that one with the highest accuracy. But that does not mean is the
+				optimal for <em>ALL </em>data in the dataset.</p>
+			<p id="26aea373-0c6a-813d-a058-da7b5cc7ccc7" class="">This phenomenon of additional processing is called
+				<em>over-thinking, </em><em><a href="https://arxiv.org/abs/1810.07052">“which occurs when a DNN can reach
+						correct predictions before its final layer”</a></em> [5].</p>
+			<h2 id="26aea373-0c6a-81a2-bcc0-e44c7af80c24" class="">Scale issue of the Transformer</h2>
+			<p id="26aea373-0c6a-8174-afc9-e6667fbfb57e" class="">I will not dive deep on the details behind the transformer
+				or the visual transformer, for that I’ve put some excellent resources at the end of the article. You don’t need
+				to be extremely familiar with their architecture to understand this article, but for this section it would for
+				sure help.</p>
+			<figure id="26aea373-0c6a-8177-a65f-fbad0d9b37a7" class="image" style="text-align:center"><a
+					href="ee-in-cv-pt1/image.png"><img
+						style="width:192px"
+						src="ee-in-cv-pt1/image.png" /></a>
+				<figcaption>ViT encoder [1]</figcaption>
+			</figure>
+			<p id="26aea373-0c6a-8191-899e-cf431b13c523" class="">Let’s start at the base. An essential part of the
+				transformer’s architecture is the <em>Encoder. </em>The encoder is essentially a chain of so-called
+				<em>attention blocks. </em>They are named thus because at the hart of each block lies the (scaled dot-product
+				self-) <em>attention</em> algorithm, defined as follows:</p>
+			<figure id="26aea373-0c6a-816a-a335-d4b3def448d5" class="equation">
+				<style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style>
+				<div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math
+									xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+									<semantics>
+										<mrow>
+											<mtext>Attention</mtext>
+											<mo stretchy="false">(</mo>
+											<mi>Q</mi>
+											<mo separator="true">,</mo>
+											<mi>K</mi>
+											<mo separator="true">,</mo>
+											<mi>V</mi>
+											<mo stretchy="false">)</mo>
+											<mo>=</mo>
+											<mtext>softmax</mtext>
+											<mo stretchy="false">(</mo>
+											<mfrac>
+												<mrow>
+													<mi>Q</mi>
+													<mo>⋅</mo>
+													<msup>
+														<mi>K</mi>
+														<mi>t</mi>
+													</msup>
+												</mrow>
+												<msqrt>
+													<msub>
+														<mi>d</mi>
+														<mi>k</mi>
+													</msub>
+												</msqrt>
+											</mfrac>
+											<mo stretchy="false">)</mo>
+											<mi>V</mi>
+										</mrow>
+										<annotation encoding="application/x-tex">\text{Attention}(Q,K,V)=\text{softmax}(\frac{Q \cdot
+											K^t}{\sqrt{d_k}})V</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span
+											class="mord">Attention</span></span><span class="mopen">(</span><span
+										class="mord mathnormal">Q</span><span class="mpunct">,</span><span class="mspace"
+										style="margin-right:0.1667em;"></span><span class="mord mathnormal"
+										style="margin-right:0.07153em;">K</span><span class="mpunct">,</span><span class="mspace"
+										style="margin-right:0.1667em;"></span><span class="mord mathnormal"
+										style="margin-right:0.22222em;">V</span><span class="mclose">)</span><span class="mspace"
+										style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace"
+										style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut"
+										style="height:2.4006em;vertical-align:-0.93em;"></span><span class="mord text"><span
+											class="mord">softmax</span></span><span class="mopen">(</span><span class="mord"><span
+											class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span
+													class="vlist-r"><span class="vlist" style="height:1.4706em;"><span
+															style="top:-2.2528em;"><span class="pstrut" style="height:3em;"></span><span
+																class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span
+																			class="vlist-r"><span class="vlist" style="height:0.8572em;"><span
+																					class="svg-align" style="top:-3em;"><span class="pstrut"
+																						style="height:3em;"></span><span class="mord"
+																						style="padding-left:0.833em;"><span class="mord"><span
+																								class="mord mathnormal">d</span><span class="msupsub"><span
+																									class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist"
+																											style="height:0.3361em;"><span
+																												style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span
+																													class="pstrut" style="height:2.7em;"></span><span
+																													class="sizing reset-size6 size3 mtight"><span
+																														class="mord mathnormal mtight"
+																														style="margin-right:0.03148em;">k</span></span></span></span><span
+																											class="vlist-s">​</span></span><span class="vlist-r"><span
+																											class="vlist"
+																											style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span
+																					style="top:-2.8172em;"><span class="pstrut" style="height:3em;"></span><span
+																						class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg
+																							xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em'
+																							viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'>
+																							<path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z' />
+																						</svg></span></span></span><span class="vlist-s">​</span></span><span
+																			class="vlist-r"><span class="vlist"
+																				style="height:0.1828em;"><span></span></span></span></span></span></span></span><span
+															style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span
+																class="frac-line" style="border-bottom-width:0.04em;"></span></span><span
+															style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span
+																class="mord"><span class="mord mathnormal">Q</span><span class="mspace"
+																	style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace"
+																	style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal"
+																		style="margin-right:0.07153em;">K</span><span class="msupsub"><span
+																			class="vlist-t"><span class="vlist-r"><span class="vlist"
+																					style="height:0.7936em;"><span style="top:-3.063em;margin-right:0.05em;"><span
+																							class="pstrut" style="height:2.7em;"></span><span
+																							class="sizing reset-size6 size3 mtight"><span
+																								class="mord mathnormal mtight">t</span></span></span></span></span></span></span></span></span></span></span><span
+														class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist"
+														style="height:0.93em;"><span></span></span></span></span></span><span
+											class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span
+										class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span></span></div>
+			</figure>
+			<p id="26aea373-0c6a-814a-8f51-f156c1cd9f56" class="">With <style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mi>X</mi>
+										</mrow>
+										<annotation encoding="application/x-tex">X</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:0.6833em;"></span><span class="mord mathnormal"
+										style="margin-right:0.07847em;">X</span></span></span></span></span><span>﻿</span></span> being the
+				input and <style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mi>Q</mi>
+											<mo separator="true">,</mo>
+											<mi>K</mi>
+											<mo separator="true">,</mo>
+											<mi>V</mi>
+										</mrow>
+										<annotation encoding="application/x-tex">Q, K, V</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Q</span><span
+										class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span
+										class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mpunct">,</span><span
+										class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal"
+										style="margin-right:0.22222em;">V</span></span></span></span></span><span>﻿</span></span> matrices
+				first computed as <style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mi>Q</mi>
+											<mo>=</mo>
+											<mi>X</mi>
+											<msub>
+												<mi>W</mi>
+												<mi>Q</mi>
+											</msub>
+										</mrow>
+										<annotation encoding="application/x-tex">Q=XW_Q</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Q</span><span
+										class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace"
+										style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut"
+										style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord mathnormal"
+										style="margin-right:0.07847em;">X</span><span class="mord"><span class="mord mathnormal"
+											style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span
+													class="vlist-r"><span class="vlist" style="height:0.3283em;"><span
+															style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut"
+																style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span
+																	class="mord mathnormal mtight">Q</span></span></span></span><span
+														class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist"
+														style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>,
+				<style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mi>K</mi>
+											<mo>=</mo>
+											<mi>X</mi>
+											<msub>
+												<mi>W</mi>
+												<mi>K</mi>
+											</msub>
+										</mrow>
+										<annotation encoding="application/x-tex">K=XW_K</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:0.6833em;"></span><span class="mord mathnormal"
+										style="margin-right:0.07153em;">K</span><span class="mspace"
+										style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace"
+										style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut"
+										style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal"
+										style="margin-right:0.07847em;">X</span><span class="mord"><span class="mord mathnormal"
+											style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span
+													class="vlist-r"><span class="vlist" style="height:0.3283em;"><span
+															style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut"
+																style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span
+																	class="mord mathnormal mtight"
+																	style="margin-right:0.07153em;">K</span></span></span></span><span
+														class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist"
+														style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>
+				and <style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mi>V</mi>
+											<mo>=</mo>
+											<mi>X</mi>
+											<msub>
+												<mi>W</mi>
+												<mi>V</mi>
+											</msub>
+										</mrow>
+										<annotation encoding="application/x-tex">V=XW_V</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:0.6833em;"></span><span class="mord mathnormal"
+										style="margin-right:0.22222em;">V</span><span class="mspace"
+										style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace"
+										style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut"
+										style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal"
+										style="margin-right:0.07847em;">X</span><span class="mord"><span class="mord mathnormal"
+											style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span
+													class="vlist-r"><span class="vlist" style="height:0.3283em;"><span
+															style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut"
+																style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span
+																	class="mord mathnormal mtight"
+																	style="margin-right:0.22222em;">V</span></span></span></span><span
+														class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist"
+														style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>.
+			</p>
+			<p id="26aea373-0c6a-8189-b2f2-deacde46f11e" class="">This marvelous equation comes at a cost; The computational
+				complexity of the entire self-attention calculation is <style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mi>O</mi>
+											<mo stretchy="false">(</mo>
+											<msup>
+												<mi>n</mi>
+												<mn>2</mn>
+											</msup>
+											<mo stretchy="false">)</mo>
+										</mrow>
+										<annotation encoding="application/x-tex">O(n^2)</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal"
+										style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span
+											class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span
+													class="vlist-r"><span class="vlist" style="height:0.8141em;"><span
+															style="top:-3.063em;margin-right:0.05em;"><span class="pstrut"
+																style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span
+																	class="mord mtight">2</span></span></span></span></span></span></span></span><span
+										class="mclose">)</span></span></span></span></span><span>﻿</span></span>. I recommend referring to
+				<a href="https://arxiv.org/abs/2209.04881">this great paper</a> on the computational complexity of
+				self-attention for details.</p>
+			<p id="26aea373-0c6a-815f-adc3-d37d63dbeda5" class="">This present a difficult challenge: I<strong>f we wanted to
+					increase the image size by a factor of 2, to get more details and perhaps be better at prediction, we would
+					need 4 times more computations</strong>. Even if running this calculation in GPU, the latency might increase
+				significantly, particularly if there are many blocks with now an increased computations count.</p>
+			<p id="26aea373-0c6a-8105-a3ae-ed4d04d51a60" class="">Now, coming back to the <em>over-thinking </em>problem of
+				last section, what if there was a way to <em>avoid </em>unnecessary runs through attention blocks? What if we
+				could use just the right amount of attention blocks and prevent using the rest, thus <em>saving latency
+					time?</em></p>
+			<p id="26aea373-0c6a-81c3-8b66-da950d3f5caf" class="">Enter early exits…</p>
+			<h1 id="26aea373-0c6a-81e0-9cb2-c68592bd7336" class="">Early Exits</h1>
+			<p id="26aea373-0c6a-81f4-ad47-fb90ac0d635b" class=""><em>Early-exit </em>design is an approach to make larger
+				models act faster and still preserve or even improve they performance.</p>
+			<p id="26aea373-0c6a-81fd-aa50-eb86b6662bfb" class="">As mentioned before, in a typical neural network, latency is
+				fixed, and it<strong> stays fixed no matter the characteristics of the given data. </strong>The idea is then to
+				attach additional computational flows to the model’s ‘static’ one, with the intention of producing outputs
+				faster than by just using the static network. Then, discriminating with some heuristic, such early output is
+				potentially taken as the model’s output.</p>
+			<figure id="26aea373-0c6a-813f-8050-eae12ecb5b5c" class="image" style="text-align:center"><a
+					href="ee-in-cv-pt1/image%201.png"><img
+						style="width:288px"
+						src="ee-in-cv-pt1/image%201.png" /></a>
+				<figcaption>Schematic representation of early exits in a neural network model <a
+						href="https://arxiv.org/abs/2106.15183">[3]</a></figcaption>
+			</figure>
+			<p id="26aea373-0c6a-8132-9bf0-cd2afb5a4347" class="">The figure above shows the general idea behind early exits.
+				If any of the <em>early results </em>passes the determined heuristic, the computation stops and the prediction
+				is yielded.</p>
+			<p id="26aea373-0c6a-816b-8fe7-f328033e975e" class="">Typically the longest computational path is called the
+				<em>backbone. </em>In models that are extended with early exits, this would be the the <em>un-extended</em>
+				graph. The early exits are sometime called <em>branches.</em></p>
+			<h3 id="26aea373-0c6a-8142-bb70-f57c369f46db" class="">Early-exit design</h3>
+			<p id="26aea373-0c6a-8126-ba23-f83aee1c3d54" class="">Designing <em>early exits</em> for a network is essentially
+				answering 4 questions:</p>
+			<ol type="1" id="26aea373-0c6a-8146-8342-dc4178d0f2ce" class="numbered-list" start="1">
+				<li><strong>Architecture: </strong>What kind of branches to attach?</li>
+			</ol>
+			<ol type="1" id="26aea373-0c6a-814b-b4de-de7e524d7d82" class="numbered-list" start="2">
+				<li><strong>Placement: </strong>Where to attach these branches?</li>
+			</ol>
+			<ol type="1" id="26aea373-0c6a-81cf-b77c-e4aab0bbdcba" class="numbered-list" start="3">
+				<li><strong>Training: </strong>How to train this branches?</li>
+			</ol>
+			<ol type="1" id="26aea373-0c6a-8182-87c3-f69e8eeb1eac" class="numbered-list" start="4">
+				<li><strong>Exit policy:</strong> Through which branch to exit?</li>
+			</ol>
+			<p id="26aea373-0c6a-81d9-baca-f15bbe3b6388" class="">There has been a considerable amount of work done on
+				answering this questions and covering all considerations fall outside of the scope of this article. I want to
+				give an overview on how this challenges have been approached, and and the end of the section will mention the
+				references that provide excellent in-detail explanations.</p>
+			<p id="26aea373-0c6a-8121-9d93-c8eb83a71291" class=""><strong>Architecture and Placement</strong></p>
+			<p id="26aea373-0c6a-81c7-b052-eced7cfe5af9" class="">The branch architecture is determined by its placement.
+				Since it has as input information that has been only <em>partially </em>processed by the backbone and thus its
+				architecture should compensate for this fact.</p>
+			<p id="26aea373-0c6a-8121-83c6-c212896f51f8" class="">That being said, it is important to remember that the goal
+				is to reduce computation time with little to no accuracy cost and thus, the branch architecture design is an
+				iterative process. Placement is in general a trade-off: How much computation I add vs what is my potential gain?
+				It usually starts with placement everywhere and gets reduced to maximize performance on the domain dataset.</p>
+			<p id="26aea373-0c6a-813a-9f17-db94c94aedd4" class="">When considering ViT-based backbones, the notion of
+				<em>receptive field </em>comes in handy. Contrary to CNNs, transformers’ receptive filed does not increase along
+				the model. Thus, pairing Convolutional branches to a ViT-based backbone feels intuitive.
+			<div class="indented">
+				<p id="26aea373-0c6a-81b5-a38e-ea9f29e66e81" class=""><em>“A fusion of CNNs that can capture local structure
+						very well but can not handle long range interactions, with ViTs which can process long range interactions,
+						seems natural and may combine the advantages of both” </em><em><a
+							href="https://arxiv.org/abs/2106.15183">[3]</a></em></p>
+			</div>
+			</p>
+			<p id="26aea373-0c6a-8173-9067-c24cc60fc557" class=""><strong>A good example</strong> of this process is the work
+				of <em><a href="https://arxiv.org/abs/2106.15183">Multi-Exit Vision Transformer for Dynamic Inference
+						[3]</a></em>. They attached 7 different branch architectures to a ViT backbone and compared each locations
+				accuracy of all branch options, bench-marking their performance in the <a
+					href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR10 and CIFAR100</a> datasets.</p>
+			<figure id="26aea373-0c6a-815b-9cf6-eeb8e2bef591" class="image" style="text-align:center"><a
+					href="ee-in-cv-pt1/b7a269e1-dac5-42c2-a71c-bd90b12329bf.png"><img
+						style="width:432px"
+						src="ee-in-cv-pt1/b7a269e1-dac5-42c2-a71c-bd90b12329bf.png" /></a>
+				<figcaption>Some of the branch options in <a href="https://arxiv.org/abs/2106.15183">[3]</a></figcaption>
+			</figure>
+			<p id="26aea373-0c6a-817f-85d3-e9df617bba4b" class=""> From their results we can see that in early locations, CNN
+				branches out-perform ViT based ones in early positions, likely due to the combination of convolution with early
+				attention states. Conversely, at later staged ViT-like branches take the lead, perhaps since the many attention
+				blocks used at that point capture enough information before being processed for exiting. </p>
+			<figure id="26aea373-0c6a-8113-8e0c-c59b0ce7035e" class="image" style="text-align:center"><a
+					href="ee-in-cv-pt1/image%202.png"><img
+						style="width:672px"
+						src="ee-in-cv-pt1/image%202.png" /></a>
+				<figcaption>Accuracy of model branches for CIFAR100 dataset <a href="https://arxiv.org/abs/2106.15183">[3]</a>.
+				</figcaption>
+			</figure>
+			<p id="26aea373-0c6a-8166-9327-ddecdb34c70d" class="">A very noteworthy conclusion form these work, is that an
+				early-exit model can have branches with different architectures, each one selected to perform best at their
+				location.</p>
+			<hr id="26aea373-0c6a-81c0-bcb5-f92f65615682" />
+			<p id="26aea373-0c6a-81bb-9d45-f8006f79af9c" class=""><strong>Training</strong></p>
+			<p id="26aea373-0c6a-819c-8bbb-fff6abf12f8c" class="">Training is also a design decision. Most of the research
+				done deals with one of the following three approached:</p>
+			<p id="26aea373-0c6a-81bb-ba08-c8f0da37ef49" class=""><span
+					style="border-bottom:0.05em solid">Joint-training</span>
+			<div class="indented">
+				<p id="26aea373-0c6a-81f0-acdd-d29f202852c1" class="">The overall architecture can be trained jointly by
+					defining a single optimization problem that embraces all intermediate exits.</p>
+				<figure id="26aea373-0c6a-8106-a981-df9f496626d9" class="image"><a
+						href="ee-in-cv-pt1/image%203.png"><img
+							style="width:480px"
+							src="ee-in-cv-pt1/image%203.png" /></a>
+					<figcaption>Visual representation of the ‘joint<em>’ </em>training<em> </em>strategy <a
+							href="https://dl.acm.org/doi/full/10.1145/3698767">[4]</a></figcaption>
+				</figure>
+			</div>
+			</p>
+			<p id="26aea373-0c6a-81f2-8f7c-f57094288525" class=""><span style="border-bottom:0.05em solid">Layer-wise</span>
+			<div class="indented">
+				<p id="26aea373-0c6a-8146-9e3c-f36f3ac1a16a" class="">Each single auxiliary classifier is trained together with
+					some layers of the backbone.</p>
+				<p id="26aea373-0c6a-81b7-a6bc-c42104c1c493" class="">Either <strong>all</strong> the layers preceding it
+					—called separate training<em>— </em>or <strong>only </strong>the preceding layers that only contribute to that
+					branch —called <em>branch-wise </em>training—</p>
+				<figure id="26aea373-0c6a-81af-a8d4-dd233ba2cb69" class="image"><a
+						href="ee-in-cv-pt1/image%204.png"><img
+							style="width:549.9715576171875px"
+							src="ee-in-cv-pt1/image%204.png" /></a>
+					<figcaption>Visual representation of the ‘<em>separate’ </em>training<em> </em>strategy <a
+							href="https://dl.acm.org/doi/full/10.1145/3698767">[4]</a>.</figcaption>
+				</figure>
+				<figure id="26aea373-0c6a-81f6-9f63-c8a85bc2fba9" class="image"><a
+						href="ee-in-cv-pt1/image%205.png"><img
+							style="width:530.9801025390625px"
+							src="ee-in-cv-pt1/image%205.png" /></a>
+					<figcaption>Visual representation of the ‘branch-wise<em>’ </em>training strategy <a
+							href="https://dl.acm.org/doi/full/10.1145/3698767">[4]</a>.</figcaption>
+				</figure>
+			</div>
+			</p>
+			<p id="26aea373-0c6a-811f-a7af-d00498ae05b2" class=""><span style="border-bottom:0.05em solid">Classifier-wise or
+					two-stage</span>
+			<div class="indented">
+				<p id="26aea373-0c6a-8112-ae3a-d54bf8be9603" class="">The backbone network is trained first, and a a second
+					stage the auxiliary classifiers are trained with the backbones parameters frozen. This can be interpreted as a
+					very primitive form of knowledge distillation.</p>
+				<figure id="26aea373-0c6a-8139-b4d3-c0e017480d7c" class="image"><a
+						href="ee-in-cv-pt1/image%206.png"><img
+							style="width:525.9801025390625px"
+							src="ee-in-cv-pt1/image%206.png" /></a>
+					<figcaption>Visual representation of the ‘<em>two-stage’ </em>training<em> </em>strategy <a
+							href="https://dl.acm.org/doi/full/10.1145/3698767">[4]</a>.</figcaption>
+				</figure>
+				<p id="26aea373-0c6a-817c-92c2-fc80af539729" class="">There are more complex strategies, like
+					knowledge-distillation or the so-called hybrid strategies, but they are for the most part combinations of
+					these ones mentioned here.</p>
+				<p id="26aea373-0c6a-8162-b1ee-fae4f634953f" class="">Choosing a strategy depends on a number of factors. The
+					work in <a href="https://dl.acm.org/doi/full/10.1145/3698767">[4]</a> score these strategies with 5
+					indicators: Computational complexity, Implementation complexity, Inter-branch training coordination,
+					flexibility and transfer learning potential. For a deeper understanding of the options out there and their
+					implication I highly recommend reading their work.</p>
+				<hr id="26aea373-0c6a-8143-9f11-c000280abb6c" />
+				<p id="26aea373-0c6a-81f5-b6a1-f5ddbd77e26b" class=""><strong>Exit strategy</strong></p>
+				<p id="26aea373-0c6a-814f-8ae4-fcde45f983e7" class="">Exit strategy or <em>exit policy, </em>refers to the
+					decision mechanism to determine when and which exit’s prediction to use.</p>
+				<p id="26aea373-0c6a-81f9-b7d5-df3645982c9f" class="">Its common for this policies to be rule-based or
+					<em>static. </em>The two most common are <em>Max-SoftMax</em> and <em>Entropy.</em></p>
+				<p id="26aea373-0c6a-815c-8c01-d565cc1ebf03" class="">The <em>Max-softmax </em>strategy compares the confidence
+					of an early exit’s prediction to a threshold value, and for the <em>Entropy </em>strategy, predictions are
+					considered confident if the entropy of the prediction vector falls below a determined threshold. </p>
+				<figure id="26aea373-0c6a-81da-abbe-d80689d69072" class="image" style="text-align:center"><a
+						href="ee-in-cv-pt1/image%207.png"><img
+							style="width:345.9801025390625px"
+							src="ee-in-cv-pt1/image%207.png" /></a>
+					<figcaption>Inference with static policy [4].</figcaption>
+				</figure>
+				<p id="26aea373-0c6a-81f6-91c3-fafd4b030166" class="">There are other strategy types. Its also common to find
+					learned policies or policies of inclusion, those where the intermediary exits are not taken as output but as a
+					alternative processing to aid in the final prediction— but these fall outside of this scope.</p>
+			</div>
+			</p>
+			<h1 id="26aea373-0c6a-81ed-9dc0-f6ef8d5b66ba" class="">The LGVIT model</h1>
+			<h2 id="26aea373-0c6a-8176-a8b3-dfc47f906f3d" class="">Meet LGVIT</h2>
+			<p id="26aea373-0c6a-81e4-9f72-fb95322143e5" class="">In 2023, <a href="https://arxiv.org/abs/2308.00255">Xu et
+					al. [2]</a> presented <em>LGViT, </em>an early-exit model with very promising results, as they showed
+				significant computation savings with little compromise in accuracy. Their work involved taking many of the
+				useful insights from past research in term of branch architecture and training and putting it all together.</p>
+			<p id="26aea373-0c6a-810b-b78c-d08ec37f7a19" class="">They carried themselves a branch type study and came to two
+				conclusions:</p>
+			<ul id="26aea373-0c6a-81f0-8b02-d13418a331d8" class="bulleted-list">
+				<li style="list-style-type:disc">Convolution-based exits can offer good feature representation in shallow layers
+					of the ViT</li>
+			</ul>
+			<ul id="26aea373-0c6a-81a7-b36c-c358d5948cb6" class="bulleted-list">
+				<li style="list-style-type:disc">Attention-based exits extract target semantic features if places late enough in
+					the model.</li>
+			</ul>
+			<p id="26aea373-0c6a-81d5-971d-ce54e525f8c0" class="">Very similar to the insights from the authors of
+				<em>Multi-exit vision transformer</em>!</p>
+			<p id="26aea373-0c6a-8105-b1fc-c9c392a9f907" class="">Based on this, the LGViT authors designed two types of
+				branches, which they called <em>Local Perception Head </em>and <em>Global Aggregation Head. </em>The first one
+				has convolution at its core, with some of the kernels being dependent on the position of the head. The second
+				one aggregates by means of pooling adjacent features and then applies dot-product attention to the pooled
+				features. Here two the pooling window size is position dependent.</p>
+			<div id="26aea373-0c6a-8136-ab5a-f06422cd4031" class="column-list">
+				<div id="26aea373-0c6a-8155-aeb2-eee7e17fc96a" style="width:50%" class="column">
+					<figure id="26aea373-0c6a-8133-aec2-d0dc2ecd7dce" class="image" style="text-align:center"><a
+							href="ee-in-cv-pt1/image%208.png"><img
+								style="width:240px"
+								src="ee-in-cv-pt1/image%208.png" /></a>
+					</figure>
+				</div>
+				<div id="26aea373-0c6a-8176-adb2-edb15b0b558e" style="width:50%" class="column">
+					<figure id="26aea373-0c6a-81da-b0be-c01991368c5e" class="image" style="text-align:center"><a
+							href="ee-in-cv-pt1/image%209.png"><img
+								style="width:240px"
+								src="ee-in-cv-pt1/image%209.png" /></a>
+					</figure>
+				</div>
+			</div>
+			<p id="26aea373-0c6a-8182-b2de-d30029a35e18" class="">As <strong>Exit strategy</strong>, the authors resorted to
+				the well used <em>max-Softmax</em> strategy we mentioned earlier. Formally, the strategy compares the highest
+				class probability <style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<msub>
+												<mi>c</mi>
+												<mi>m</mi>
+											</msub>
+											<mo stretchy="false">(</mo>
+											<msup>
+												<mi>p</mi>
+												<mi>m</mi>
+											</msup>
+											<mo stretchy="false">)</mo>
+										</mrow>
+										<annotation encoding="application/x-tex">c_m(p^m)</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span
+											class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span
+													class="vlist-r"><span class="vlist" style="height:0.1514em;"><span
+															style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut"
+																style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span
+																	class="mord mathnormal mtight">m</span></span></span></span><span
+														class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist"
+														style="height:0.15em;"><span></span></span></span></span></span></span><span
+										class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span
+											class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist"
+														style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span
+																class="pstrut" style="height:2.7em;"></span><span
+																class="sizing reset-size6 size3 mtight"><span
+																	class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span
+										class="mclose">)</span></span></span></span></span><span>﻿</span></span> in the <style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mi>m</mi>
+										</mrow>
+										<annotation encoding="application/x-tex">m</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:0.4306em;"></span><span
+										class="mord mathnormal">m</span></span></span></span></span><span>﻿</span></span> exit’s prediction
+				distribution to a determined threshold <style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mi>τ</mi>
+										</mrow>
+										<annotation encoding="application/x-tex">\tau</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:0.4306em;"></span><span class="mord mathnormal"
+										style="margin-right:0.1132em;">τ</span></span></span></span></span><span>﻿</span></span></p>
+			<p id="26aea373-0c6a-81d1-8db8-f38dcfe053ec" class="">
+				<style>
+					@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+				</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+					style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+							class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+									<semantics>
+										<mrow>
+											<mtext>For exit </mtext>
+											<mstyle scriptlevel="0" displaystyle="false">
+												<mi>m</mi>
+											</mstyle>
+										</mrow>
+										<annotation encoding="application/x-tex">\text{For exit $m$}</annotation>
+									</semantics>
+								</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+										style="height:0.6833em;"></span><span class="mord text"><span class="mord">For exit </span><span
+											class="mord mathnormal">m</span></span></span></span></span></span><span>﻿</span></span>:
+			<div class="indented">
+				<p id="26aea373-0c6a-812c-9250-ef8cdba1dee2" class="">
+					<style>
+						@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+					</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+						style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+								class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+										<semantics>
+											<mrow>
+												<msub>
+													<mi>c</mi>
+													<mi>m</mi>
+												</msub>
+												<mo stretchy="false">(</mo>
+												<msup>
+													<mi>p</mi>
+													<mi>m</mi>
+												</msup>
+												<mo stretchy="false">)</mo>
+												<mo>←</mo>
+												<msub>
+													<mrow>
+														<mi>max</mi>
+														<mo>⁡</mo>
+													</mrow>
+													<mi>C</mi>
+												</msub>
+												<mo stretchy="false">(</mo>
+												<msup>
+													<mi>p</mi>
+													<mi>m</mi>
+												</msup>
+												<mo stretchy="false">)</mo>
+											</mrow>
+											<annotation encoding="application/x-tex">c_m(p^m) \gets \max_C (p^m)</annotation>
+										</semantics>
+									</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+											style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span
+												class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span
+														class="vlist-r"><span class="vlist" style="height:0.1514em;"><span
+																style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut"
+																	style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span
+																		class="mord mathnormal mtight">m</span></span></span></span><span
+															class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist"
+															style="height:0.15em;"><span></span></span></span></span></span></span><span
+											class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span
+												class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist"
+															style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span
+																	class="pstrut" style="height:2.7em;"></span><span
+																	class="sizing reset-size6 size3 mtight"><span
+																		class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span
+											class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span
+											class="mrel">←</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span
+										class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span
+											class="mop"><span class="mop">max</span><span class="msupsub"><span class="vlist-t vlist-t2"><span
+														class="vlist-r"><span class="vlist" style="height:0.3283em;"><span
+																style="top:-2.55em;margin-right:0.05em;"><span class="pstrut"
+																	style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span
+																		class="mord mathnormal mtight"
+																		style="margin-right:0.07153em;">C</span></span></span></span><span
+															class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist"
+															style="height:0.15em;"><span></span></span></span></span></span></span><span
+											class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span
+												class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist"
+															style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span
+																	class="pstrut" style="height:2.7em;"></span><span
+																	class="sizing reset-size6 size3 mtight"><span
+																		class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span
+											class="mclose">)</span></span></span></span></span><span>﻿</span></span>
+				<div class="indented">
+					<p id="26aea373-0c6a-8192-b9de-d8d8ab9fe763" class="">
+						<style>
+							@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+						</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+							style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+									class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+											<semantics>
+												<mrow>
+													<mtext>if </mtext>
+													<mo stretchy="false">(</mo>
+													<msub>
+														<mi>c</mi>
+														<mi>m</mi>
+													</msub>
+													<mo>&gt;</mo>
+													<mi>τ</mi>
+													<mo stretchy="false">)</mo>
+												</mrow>
+												<annotation encoding="application/x-tex">\text{if }(c_m &gt; \tau)</annotation>
+											</semantics>
+										</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+												style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span
+													class="mord">if </span></span><span class="mopen">(</span><span class="mord"><span
+													class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span
+															class="vlist-r"><span class="vlist" style="height:0.1514em;"><span
+																	style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut"
+																		style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span
+																			class="mord mathnormal mtight">m</span></span></span></span><span
+																class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist"
+																style="height:0.15em;"><span></span></span></span></span></span></span><span
+												class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span
+												class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span
+												class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal"
+												style="margin-right:0.1132em;">τ</span><span
+												class="mclose">)</span></span></span></span></span><span>﻿</span></span>
+					<div class="indented">
+						<p id="26aea373-0c6a-8154-b27f-c8b46d6d0cf5" class="">
+							<style>
+								@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')
+							</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token"
+								style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span
+										class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+												<semantics>
+													<mrow>
+														<mtext mathvariant="bold">Exit</mtext>
+													</mrow>
+													<annotation encoding="application/x-tex">\textbf{Exit}</annotation>
+												</semantics>
+											</math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut"
+													style="height:0.6944em;"></span><span class="mord text"><span
+														class="mord textbf">Exit</span></span></span></span></span></span><span>﻿</span></span>
+						</p>
+					</div>
+					</p>
+				</div>
+				</p>
+			</div>
+			</p>
+			<p id="26aea373-0c6a-81f0-ac06-c365c17c5ef7" class="">The threshold value can be different for different exits,
+				but its common for it to be a fixed value. In the case of LGViT, the authors’ published value was 0.8. This
+				decision should not be overlooked. As we will see later on, this can have major implications in the performance
+				increase.</p>
+			<figure id="26aea373-0c6a-81f8-9297-d78a1fc531f5" class="image" style="text-align:center"><a
+					href="ee-in-cv-pt1/lgvit_model_diagram.png"><img
+						style="width:672px"
+						src="ee-in-cv-pt1/lgvit_model_diagram.png" /></a>
+				<figcaption>Overview of the LGViT model.</figcaption>
+			</figure>
+			<p id="26aea373-0c6a-8153-ae25-e58b8b6f8826" class="">For <strong>training</strong>, the authors implements a
+				two-stage custom training scheme. First, an end-to-end approach helps the backbone ViT achieve high accuracy. In
+				the second stage, the parameters of the backbone are frozen, and only the exiting heads are updated through
+				self-distillation techniques. This procedure helped minimize information loss between the heterogeneous exit
+				architectures and facilitated knowledge transfer from deeper to shallower exits.</p>
+			<h2 id="26aea373-0c6a-81a1-8fbb-ca4bbaf61462" class="">Results</h2>
+			<p id="26aea373-0c6a-8130-87d4-ddc53a2d45bb" class="">The researchers evaluated LGViT across multiple Vision
+				Transformer architectures, including ViT, DeiT, and SWIN models.</p>
+			<p id="26aea373-0c6a-81da-87de-c5062077b2d4" class="">The following table shows a segment of the results from
+				LGViT and its comparison to the baseline model ViT-B/16 (One of the original ViT iterations;
+				<strong>B</strong>ase model with <strong>16x16</strong> image patches)</p>
+			<table id="26aea373-0c6a-810f-893d-e41d9ffa4702" class="simple-table">
+				<tbody>
+					<tr id="26aea373-0c6a-81bf-9998-e4d5ee180e68">
+						<td id="Hq&lt;_" class=""><strong>Method</strong></td>
+						<td id="SsKz" class=""><strong># Parameters</strong></td>
+						<td id="J?RE" class=""><strong>CIFAR100</strong></td>
+						<td id="GhHt" class=""><strong>FOOD101</strong></td>
+						<td id="H?DB" class=""><strong>ImageNet-1K</strong></td>
+					</tr>
+					<tr id="26aea373-0c6a-81ef-8311-df27066e23b5">
+						<td id="Hq&lt;_" class="">ViT-B/16</td>
+						<td id="SsKz" class="">86 M</td>
+						<td id="J?RE" class="">90.8% | 1.00 X</td>
+						<td id="GhHt" class="">89.6% | 1.00 X</td>
+						<td id="H?DB" class="">81.8% | 1.00 X</td>
+					</tr>
+					<tr id="26aea373-0c6a-81e7-9109-f1636077db59">
+						<td id="Hq&lt;_" class="">LGViT</td>
+						<td id="SsKz" class="">101 M</td>
+						<td id="J?RE" class="">88.5 % | 1.87 X</td>
+						<td id="GhHt" class="">88.6% | 2.36 X</td>
+						<td id="H?DB" class="">80.3 | 2.7 X</td>
+					</tr>
+				</tbody>
+			</table>
+			<p id="26aea373-0c6a-814e-850c-f2474fc2ee72" class="">Take a look at the implications. In all three cases, the
+				model gains significant speed ups —between 87 and 170 % — at a cost of ~2% in accuracy.</p>
+			<p id="26aea373-0c6a-81b1-add2-cb0f98710a4b" class="">Slicing the computations —and thus reducing latency as well
+				— in more than half sure at little accuracy cost sure feels like something useful for time restricted tasks.</p>
+			<h2 id="26aea373-0c6a-81fc-ad50-d63372140c99" class=""><mark class="highlight-default">Implementation</mark></h2>
+			<p id="26aea373-0c6a-818b-ad05-fdff4b2b0d3c" class="">The LGViT implementation maintains a structure similar to
+				the original Vision Transformer (ViT) model (ViT-B/16), retaining the same embedding, transformer block, and
+				final <em>MLP</em> head components. The figure hereunder shows the class diagram of the model’s implementation.
+			</p>
+			<figure id="26aea373-0c6a-8179-a9fa-e167a935a928" class="image" style="text-align:center"><a
+					href="ee-in-cv-pt1/lgvit_structure.png"><img
+						style="width:576px"
+						src="ee-in-cv-pt1/lgvit_structure.png" /></a>
+			</figure>
+			<p id="26aea373-0c6a-81f8-8336-e90abdafb29f" class="">The implementation unifies both ViT and DeiT models under a
+				single structure, with naming conventions primarily reflecting DeiT terminology. This unified approach enabled
+				the authors to experiment with different backbone architectures more efficiently. The <em>forward pass</em>
+				through the model follows a specific flow pattern, presented in the following block diagrams.</p>
+			<p id="26aea373-0c6a-81bc-ba34-dcc349d14f0c" class="">The first figure shows the high-level flow through the
+				entire model, while the second illustrates the encoder&#x27;s operation with early exit mechanisms.</p>
+			<figure id="26aea373-0c6a-81cb-8549-d43c27e8fc0a" class="image" style="text-align:center"><a
+					href="ee-in-cv-pt1/DeitModel_flow.png"><img
+						style="width:720px"
+						src="ee-in-cv-pt1/DeitModel_flow.png" /></a>
+				<figcaption>Overview of the LGViT forward pass.</figcaption>
+			</figure>
+			<p id="26aea373-0c6a-81c7-9915-f65aae4f37e1" class="">The implementation utilizes <code>try/catch</code>
+				statements as the exit mechanism. When exit conditions were met, the determined <code>DeiTLayer</code> throws a
+				<code>HighwayException</code>, which is then caught by the <code>DeiTEncoder</code>. </p>
+			<h1 id="26aea373-0c6a-81f2-aabc-c8cd641cabe4" class="">Challenges beyond design</h1>
+			<h2 id="26aea373-0c6a-81b9-9513-c148c20365b6" class=""><mark class="highlight-default"><mark
+						class="highlight-default_background"><strong>Early Exit models in production or How
+							to</strong></mark></mark></h2>
+			<p id="26aea373-0c6a-8153-8db8-ef53fb770f67" class="">Despite their potential, adoption of early exit models in
+				production environments<br />is challenging due to the dynamic nature of their computational graph. At code
+				level, the mechanisms that change the <em>flow </em>of the computation are known as <em>control-flow
+				</em>statements.</p>
+			<p id="26aea373-0c6a-8141-953b-fb882e19e12a" class="">Because they are very common for all types of computations,
+				it might even sound a little ridiculous to say that they require special attention when implementing them for
+				neural networks that are to be used in production systems. Why is that? It all comes down to <em>traceability.
+				</em>More specifically, to <em>exportability.</em></p>
+			<p id="26aea373-0c6a-8175-b977-c91ea711a1ac" class="">Production environments, especially in edge computing
+				scenarios, in order to maintain </p>
+			<p id="26aea373-0c6a-8105-9a00-f31d799fd9f0" class="">Furthermore, such environments benefit from remaining
+				agnostic to the development frameworks used to build the models they employ.<em> </em>so that replacement of
+				older models with newer, better performing ones is seamless. The ONNX (<strong>O</strong>pen
+				<strong>N</strong>eural <strong>N</strong>etwork e<strong>X</strong>change) standard addresses this need by
+				providing a framework independent representation for neural networks.</p>
+			<figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex"
+				id="26aea373-0c6a-81d9-9e2b-da6b76b44982">
+				<div style="font-size:1.5em"><span class="icon">💡</span></div>
+				<div style="width:100%">
+					<p id="26aea373-0c6a-81fa-9396-fa53c6563cf8" class="">You can read more on ONNX in these two resources:</p>
+					<ul id="26aea373-0c6a-817d-ad0a-c1de0d78633b" class="bulleted-list">
+						<li style="list-style-type:disc"><a
+								href="https://medium.com/@shivprataprai11/understanding-onnx-an-open-standard-for-deep-learning-models-350a72714660">Understanding
+								ONNX</a></li>
+					</ul>
+					<ul id="26aea373-0c6a-81bc-b741-ca271d69a861" class="bulleted-list">
+						<li style="list-style-type:disc"><a
+								href="https://viso.ai/computer-vision/onnx-explained-a-new-paradigm-in-ai-interoperability/">ONNX
+								explained</a></li>
+					</ul>
+				</div>
+			</figure>
+			<p id="26aea373-0c6a-8175-ac92-d2aaf508fec1" class="">While neural networks are typically built using powerful
+				frameworks like PyTorch or TensorFlow that come with a cornucopia of development tools, these same frameworks
+				represent undesirable dependencies in production. Converting models created with any framework to ONNX format
+				simplifies their adoption in framework agnostic production environments.</p>
+			<p id="26aea373-0c6a-81da-88cc-d9354c568180" class="">This context highlights the adoption challenges for early
+				exit models: until recently, capturing their dynamic nature in ONNX was very cumbersome, when it was not
+				impossible. For PyTorch, for instance, the API for tracking and exporting flow control operations was only added
+				in their 2.6 version <mark class="highlight-red">earlier this year</mark>. The
+				<code><a href="https://docs.pytorch.org/docs/stable/cond.html">torch.cond</a></code> operation allows for graph
+				computations of the model to be traced. This allows for the model to have dynamic behavior, “simply” by
+				replacing the traditional <code>if:... else</code>: syntax with the new
+				<code>torch.cond(pred, true_fn, false_fn, operands)</code>.</p>
+			<p id="26aea373-0c6a-81fa-b284-cddb912e0468" class=""><strong>Bottom line</strong>, what’s important to take away
+				from this short section is the following:</p>
+			<ol type="1" id="26aea373-0c6a-81dd-b922-e752d8561fec" class="numbered-list" start="1">
+				<li>In order to use Models developed in heavy frameworks in production environment without having to install
+					such frameworks, the models need to be <em>exported </em>into a format allows their decoupled use. The ONNX
+					standard is the most prominent option for this. </li>
+			</ol>
+			<ol type="1" id="26aea373-0c6a-81f6-9191-f463a2d73490" class="numbered-list" start="2">
+				<li>Early exits models have a dynamic computation. That is, the computation path they follow among the many
+					possibilities inside the model might change from input to input.<ol type="a"
+						id="26aea373-0c6a-81eb-a23a-d76fb0fbc3da" class="numbered-list" start="1">
+						<li>Until recently, exporting them into ONNX was not possible</li>
+					</ol>
+					<ol type="a" id="26aea373-0c6a-81e9-a3b4-d2559149b003" class="numbered-list" start="2">
+						<li>Now, while possible, the implementation needs to be implemented in a way to do so. For example, in
+							PyTorch, using the special operation <code>torch.cond</code></li>
+					</ol>
+				</li>
+			</ol>
+			<h1 id="26aea373-0c6a-81f4-8142-c9e0606250ee" class=""><mark class="highlight-default"><mark
+						class="highlight-default_background">Conclusion</mark></mark></h1>
+			<p id="26aea373-0c6a-817b-b6b2-f5c9c109303b" class="">In this 1st part, we’ve learned the basics of early exit
+				neural networks as well as some of their advantages and challenges. The following takeaways are most key: </p>
+			<ol type="1" id="26aea373-0c6a-8177-879c-c7632772541f" class="numbered-list" start="1">
+				<li>Early exits promise to reduce the latency of big slow models to make them fit for environments that could
+					benefit from them.</li>
+			</ol>
+			<ol type="1" id="26aea373-0c6a-8130-b78c-d84715904fbd" class="numbered-list" start="2">
+				<li>Research focused on ViTs with early exits shows that a combination of branch architectures helps most. LGViT
+					is one of the latest most promising results.</li>
+			</ol>
+			<ol type="1" id="26aea373-0c6a-815e-aa7a-d83b679501d6" class="numbered-list" start="3">
+				<li>Beyond their design, some care is needed when implementing this networks, so that they can be deployed to
+					the environments that could benefit from them the most.</li>
+			</ol>
+			<p id="26aea373-0c6a-81f7-8e50-c99d80a91f60" class=""> In the next part, I’ll delve on the modifications I did to
+				the LGViT model to make it production ready. Additionally, I’ll share the results of the performance study I
+				conducted on this model by bench-marking it against the CIFAR100 dataset. We will see how the performance is
+				impacted by implementation as well as by the characteristics of the dataset.</p>
+			<p id="26aea373-0c6a-8149-9c60-dd562a9f322e" class="">Hope to see you there!</p>
+			<h3 id="26aea373-0c6a-8152-ac29-f893bef0cc94" class=""><mark
+					class="highlight-default_background">Acknowledgements</mark></h3>
+			<p id="26aea373-0c6a-81b9-b964-d7018f2fd113" class="">I would like to thank my professor advisor, Lazaros
+				Nalpantidis as well as my co-advisor, PhD-candidate Fabio Montello, both from the <a
+					href="https://electro.dtu.dk/research/research-areas/electro-technology/perception-and-cognition-for-autonomous-systems">Perception
+					and Cognition for Autonomous Systems group at DTU</a>.</p>
+			<h1 id="26aea373-0c6a-81d3-9575-f79b7ac504a1" class="">Sources</h1>
+			<p id="26aea373-0c6a-8187-b535-ddc0a8cef7a2" class=""><strong>[1] </strong><strong><a
+						href="https://arxiv.org/abs/2010.11929">An Image is Worth 16x16 Words: Transformers for Image Recognition at
+						Scale</a></strong></p>
+			<p id="26aea373-0c6a-81b7-9770-c4bddbe2c98c" class=""><strong>[2] </strong><strong><a
+						href="https://arxiv.org/abs/2308.00255">LGViT: Dynamic Early Exiting for Accelerating Vision
+						Transformer</a></strong></p>
+			<p id="26aea373-0c6a-81a0-a029-e39a7169e2dd" class=""><strong>[3] </strong><strong><a
+						href="https://arxiv.org/abs/2106.15183">Multi-Exit Vision Transformer for Dynamic Inference</a></strong></p>
+			<p id="26aea373-0c6a-8195-b14b-f33e3042c06a" class=""><strong>[4] </strong><strong><a
+						href="https://dl.acm.org/doi/full/10.1145/3698767">Early-Exit Deep Neural Network - A Comprehensive
+						Survey</a></strong></p>
+			<p id="26aea373-0c6a-81fd-b739-c37e97687786" class=""><strong>[5] </strong><strong><a
+						href="https://arxiv.org/abs/1810.07052">Shallow-Deep Networks: Understanding and Mitigating Network
+						Overthinking</a></strong></p>
+			<h1 id="26aea373-0c6a-8117-ab71-e6305b8bf17b" class="">Further readings</h1>
+			<p id="26aea373-0c6a-8118-a7e8-d401eec5c3c7" class=""><strong>On (Visual) Transformers</strong></p>
+			<ul id="26aea373-0c6a-810b-8382-df7fa095e65b" class="bulleted-list">
+				<li style="list-style-type:disc"><a
+						href="https://jalammar.github.io/illustrated-transformer/">https://jalammar.github.io/illustrated-transformer/</a>
+				</li>
+			</ul>
+			<ul id="26aea373-0c6a-8169-9403-ddde68fb1407" class="bulleted-list">
+				<li style="list-style-type:disc"><a
+						href="https://research.google/blog/transformers-for-image-recognition-at-scale/">https://research.google/blog/transformers-for-image-recognition-at-scale/</a>
+				</li>
+			</ul>
+			<ul id="26aea373-0c6a-81b7-a606-c33dc1087448" class="bulleted-list">
+				<li style="list-style-type:disc"><a
+						href="https://viso.ai/deep-learning/vision-transformer-vit/">https://viso.ai/deep-learning/vision-transformer-vit/</a>
+				</li>
+			</ul>
+			<p id="26aea373-0c6a-8141-a1ae-c4da6242e0da" class=""><strong>On early exit models</strong></p>
+			<ul id="26aea373-0c6a-818c-b30c-d676c62bfeb8" class="bulleted-list">
+				<li style="list-style-type:disc"><a href="https://arxiv.org/abs/2501.07451">A Survey on Dynamic Neural Networks:
+						from Computer Vision to Multi-modal Sensor Fusion</a></li>
+			</ul>
+			<ul id="26aea373-0c6a-81a7-90ec-e8d66301eaa1" class="bulleted-list">
+				<li style="list-style-type:disc"><a href="https://arxiv.org/abs/2004.12814">Why should we add early exits to
+						neural networks?</a></li>
+			</ul>
+			<p id="26aea373-0c6a-8178-a071-ed22cfd69fa2" class=""><strong>On Onnx, PyTorch’s ONNX API</strong></p>
+			<ul id="26aea373-0c6a-8143-bf76-f1f07b677396" class="bulleted-list">
+				<li style="list-style-type:disc"><a href="https://docs.pytorch.org/docs/stable/onnx.html">torch.onnx</a></li>
+			</ul>
+		</div>
+	</article><span class="sans" style="font-size:14px;padding-top:2em"></span>
+</body>
+
+</html>
