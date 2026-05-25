@@ -1,7 +1,7 @@
 <div style="overflow: auto;">
     <figure style="float: left; margin-right: 10px; width:15%;">
       <img src="media/me_and_friends.png" alt="Image" style="width:100%;" />
-      <figcaption style="font-size: small; text-align: center;">Guess who's me</figcaption>
+      <figcaption style="font-size: small; text-align: center;">Guess which one is me</figcaption>
    </figure>
     <div>
         <strong>Welcome to my personal website!</strong>
@@ -23,10 +23,19 @@ This place serves a double purpose.
 1. As an archive of work I've done before, for now with the purpose of showing potential employers what I've done.
 2. As a place to share some of the things I've learned and found interesting.
 
+# Current Position
+**CTO** at [Erletek](https://erletek.io/) - At ERLEtek we are re-shaping construction on-site operations, where humans orchestrate and direct construction activities, and the heavy, dreadful and back-breaknig work is done by fleet of smart mobile robots. We aim to be a contruction robotics company with robots present at every construction site
+
+At ERLEtek, I lead the technical development of a mobile robot platform across hardware, electronics, and software.
+
 # Professional Background
 Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link) for a more detailed description of my professional background.
 
 ## Highlights 🌟
+🌟 **End-to-end software and hardware developemnt of a mobile concrete printer**
+
+   Leading a 3-4 ppl team, designed and implemented every aspect of a mobile robot intended to work as a mobile 3D printer at the meter scale. This has been the largest challenge so far in my professional life, as it demanded architecture desicions in many different areas, sometimes requiring some investigation and sometime having to think on your feet. My past experience in other teams became very useful here, both regarding techinical knowledge in software development for robotics, and in developemnt operations and management of technical development projects
+
 🌟 **Modular camera extrinsic calibration Tool** @[Robotize](https://robotize.com/)
 
    Developed for computing the precise pose of the camera sensors with respect to the mobile robot reference frame.
