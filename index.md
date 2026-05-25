@@ -24,7 +24,7 @@ This place serves a double purpose.
 2. As a place to share some of the things I've learned and found interesting.
 
 # Current Position
-**CTO** at [Erletek](https://erletek.io/) - At ERLEtek we are re-shaping construction on-site operations, where humans orchestrate and direct construction activities, and the heavy, dreadful and back-breaknig work is done by fleet of smart mobile robots. We aim to be a contruction robotics company with robots present at every construction site
+**CTO** at [Erletek](https://erletek.io/) - At ERLEtek we are re-shaping construction on-site operations, where humans orchestrate and direct construction activities, and the heavy, dreadful and back-breaking work is done by fleet of smart mobile robots. We aim to be a construction robotics company with robots present at every construction site
 
 At ERLEtek, I lead the technical development of a mobile robot platform across hardware, electronics, and software.
 
@@ -32,9 +32,9 @@ At ERLEtek, I lead the technical development of a mobile robot platform across h
 Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link) for a more detailed description of my professional background.
 
 ## Highlights 🌟
-🌟 **End-to-end software and hardware developemnt of a mobile concrete printer**
+🌟 **End-to-end software and hardware development of a mobile concrete printer**
 
-   Leading a 3-4 ppl team, designed and implemented every aspect of a mobile robot intended to work as a mobile 3D printer at the meter scale. This has been the largest challenge so far in my professional life, as it demanded architecture desicions in many different areas, sometimes requiring some investigation and sometime having to think on your feet. My past experience in other teams became very useful here, both regarding techinical knowledge in software development for robotics, and in developemnt operations and management of technical development projects
+   Leading a 3-4 ppl team, designed and implemented every aspect of a mobile robot intended to work as a mobile 3D printer at the meter scale. This has been the largest challenge so far in my professional life, as it demanded architecture decisions in many different areas, sometimes requiring some investigation and sometimes having to think on your feet. My past experience in other teams became very useful here, both regarding technical knowledge in software development for robotics, and in development operations and management of technical development projects
 
 🌟 **Modular camera extrinsic calibration Tool** @[Robotize](https://robotize.com/)
 
@@ -50,7 +50,7 @@ Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-n
 
 🌟 **Autonomous Tractor project** @[Blue White Robotics](https://www.bluewhite.co/)
 
-Took part in the core development as part of a 3-person team, building the first prototype for the autonomous tractor project. Implemented path-tracking, path-planning, and mission handling modules with basic hardware (depth camera, Arduino, GPS). The internal demo was succesful and managed to convince upper management, who were skeptical that the project could be done in-house, to shift from subcontractors to in-house development, scaling the team from 3 to 15 developers. The role involved extensive field testing to validate the system, which became the company's main product with original implementations still in production use today.
+Took part in the core development as part of a 3-person team, building the first prototype for the autonomous tractor project. Implemented path-tracking, path-planning, and mission handling modules with basic hardware (depth camera, Arduino, GPS). The internal demo was successful and managed to convince upper management, who were skeptical that the project could be done in-house, to shift from subcontractors to in-house development, scaling the team from 3 to 15 developers. The role involved extensive field testing to validate the system, which became the company's main product with original implementations still in production use today.
 
 # Academics
 1. Master Thesis: [Early Exit Networks for Computer Vision](courses/thesis/Study_of_Early_Exit_Neural_Networks_for_Computer_Vision.pdf)
@@ -58,7 +58,7 @@ Took part in the core development as part of a 3-person team, building the first
 
    Main project: Detection Transformer for Monocular 3D Object Detection. Check the poster [here](courses/adlcv/adlcv_poster.pdf). The code is available [here](https://github.com/esquivelrs/MonoDETR) and notes are [here](https://ludicrous-camel-09d.notion.site/MonoDETR-d3569c480d4e44159c68b9c1c27461ff)
       * Streamlined the learning of the depth-estimator, which led to better performance and lower variance during training.
-      * Proposing use of *disentangled* losses to improve kearning (inspired by Cube R-CNN).
+      * Proposing use of *disentangled* losses to improve learning (inspired by Cube R-CNN).
       * Replaced the visual encoder with a faster one from RT-DETR to explore real-time usage.
       * Reduced Backbone size to compare performance and speed.
 
@@ -69,7 +69,7 @@ Took part in the core development as part of a 3-person team, building the first
 
 3. Course: [Artificial Intelligence for Multi-Agent Systems](https://kurser.dtu.dk/course/02285)
    
-   Main Project: Windowed Hierarchichal Cooperative A* Multi-Agent Planning.[video](), [Code](https://github.com/ionymikler/MultiAgentPlanner)
+   Main Project: Windowed Hierarchical Cooperative A* Multi-Agent Planning.[video](), [Code](https://github.com/ionymikler/MultiAgentPlanner)
       * Multi-agent planner using hierarchical time-window A* for cooperative pathfinding.
         * Uses a hierarchical task planner. A high-level planner assigns subgoals to agents and each agent solves its own pathfinding problem.
         * To solve conflicts, the planner uses a time-windowed approach; Agents involved in a plan conflict are allowed to replan their paths within a time frame.
