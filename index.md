@@ -32,7 +32,7 @@ At ERLEtek, I lead the technical development of a mobile robot platform across h
 Please check my [CV](https://drive.google.com/drive/folders/1JZU4Mqzy72IL_R7KR-ndILqpjZupWLtq?usp=drive_link) for a more detailed description of my professional background.
 
 ## Highlights 🌟
-🌟 **End-to-end software and hardware development of a mobile concrete printer**
+🌟 **End-to-end software and hardware development of a mobile concrete printer** @[Erletek](https://erletek.io/)
 
    Leading a 3-4 ppl team, designed and implemented every aspect of a mobile robot intended to work as a mobile 3D printer at the meter scale. This has been the largest challenge so far in my professional life, as it demanded architecture decisions in many different areas, sometimes requiring some investigation and sometimes having to think on your feet. My past experience in other teams became very useful here, both regarding technical knowledge in software development for robotics, and in development operations and management of technical development projects
 
