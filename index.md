@@ -1,8 +1,8 @@
-<div style="overflow: auto;">
-    <figure style="float: left; margin-right: 10px; width:15%;">
+<div style="display: flex; align-items: flex-start; gap: 32px;">
+    <figure style="flex-shrink: 0; width: 15%; margin: 0;">
       <img src="media/me_and_friends.png" alt="Image" style="width:100%;" />
       <figcaption style="font-size: small; text-align: center;">Guess which one is me</figcaption>
-   </figure>
+    </figure>
     <div>
         <strong>Welcome to my personal website!</strong>
         <div>
